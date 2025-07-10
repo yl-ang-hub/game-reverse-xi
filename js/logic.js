@@ -1,118 +1,4 @@
-function checkEligibleMoves(currY, currX, self, board, checkMove = false) {
-  /**
-   * @return [isEligible: boolean, seedsToFlip: arrayOf[posY, posX]
-   */
-  // Loop all possible directions
-  //   check any eligible move for selected direction
-  //   break if there is an eligible move and checkMove is set to true
-  let seedsToFlip = [];
-  let isEligible = false;
-  let temp = [];
-  let foundSelf = false;
-  let foundOpponent = false;
-  let opponent = 1;
-  if (self) {
-    opponent = 0;
-  }
-
-  // Repeat this function below for each direction
-  const addAndResetCounters = () => {
-    if (foundOpponent && foundSelf && checkMove) {
-      return [true, temp];
-    } else if (foundOpponent && foundSelf) {
-      foundSelf = foundOpponent = false;
-      temp.forEach((coord) => seedsToFlip.push(coord));
-    }
-    temp = [];
-  };
-
-  // Direction: UP
-  for (y = currY - 1; y >= 0; y--) {
-    curr = board[y][currX];
-    if (curr === opponent) {
-      temp.push([y, currX]);
-      foundOpponent = true;
-    } else if (curr === self) {
-      foundSelf = true;
-      break;
-    } else if (curr === null) {
-      break;
-    }
-  }
-  addAndResetCounters();
-
-  // Direction: RIGHT
-  for (x = currX + 1; x <= board.length; x++) {
-    curr = board[currY][x];
-    if (curr === opponent) {
-      temp.push([currY, x]);
-      foundOpponent = true;
-    } else if (curr === self) {
-      foundSelf = true;
-      break;
-    } else if (curr === null) {
-      break;
-    }
-  }
-  addAndResetCounters();
-
-  // Direction: DOWN
-  for (y = currY + 1; y <= board.length; y++) {
-    curr = board[y][currX];
-    if (curr === opponent) {
-      temp.push([y, currX]);
-      foundOpponent = true;
-    } else if (curr === self) {
-      foundSelf = true;
-      break;
-    } else if (curr === null) {
-      break;
-    }
-  }
-  addAndResetCounters();
-
-  // Direction: LEFT
-  for (x = currX - 1; x >= 0; x--) {
-    curr = board[currY][x];
-    if (curr === opponent) {
-      temp.push([currY, x]);
-      foundOpponent = true;
-    } else if (curr === self) {
-      foundSelf = true;
-      break;
-    } else if (curr === null) {
-      break;
-    }
-  }
-  addAndResetCounters();
-
-  // TODO: Direction: DIAGONAL TOP LEFT
-
-  console.log(temp);
-  console.log(seedsToFlip);
-
-  seedsToFlip ? (isEligible = true) : (isEligible = false);
-  console.log(isEligible);
-  console.log(seedsToFlip);
-  return [isEligible, seedsToFlip];
-}
-
-function hasAvailableMove(board) {
-  /**
-   * @return boolean
-   */
-  // Loop all possible free spaces to put seed
-  //   checkEligibleMove(pos, board, checkMove = true) for selected direction
-  //   if yes, return true
-}
-
-function flipSeeds(seedsToFlip, currPlayer, board) {
-  for (let [posY, posX] of seedsToFlip) {
-    board[posY][posX] = currPlayer;
-  }
-  updateBoardDisplay(board);
-  return board;
-}
+const boardLength = 8;
 
 function placeSeed(y, x, currPlayer) {
   /**
@@ -129,11 +15,133 @@ function placeSeed(y, x, currPlayer) {
   //   return board;
   // }
 
-  board[y][x] = currPlayer;
-  const [isEligible, seedsToFlip] = checkEligibleMoves(y, x, currPlayer, board);
-  if (isEligible) {
+  const [isLegalMove, seedsToFlip] = checkMove(
+    1,
+    y,
+    x,
+    currPlayer,
+    board,
+    true
+  );
+
+  // TODO: remove isLegalMove if checkMove not to be used for checking availableMoves
+  if (isLegalMove) {
+    board[y][x] = currPlayer;
     board = flipSeeds(seedsToFlip, currPlayer, board);
+    currPlayer = changePlayer(currPlayer);
+  } else {
+    console.log("Sorry, your move is illegal. Try again.");
   }
-  currPlayer = changePlayer(currPlayer);
+  // Note that check already been done beforehand to ensure player def have legal moves
   return [board, currPlayer];
+}
+
+function checkMove(direction, y, x, self, board, getAllCapturedSeeds = false) {
+  /**
+   * Wrapper for recursive function
+   */
+  const moveY = y,
+    moveX = x,
+    opponent = self ? 0 : 1;
+  let seedsToFlip = [],
+    capturedSeedsInOneDirection = [],
+    isLegalMove = false;
+
+  function recursiveCheckMove(direction, y, x) {
+    /**
+     * Updates capturedSeeds
+     */
+    console.log(`moveY and moveX is ${moveY} and ${moveX}`);
+    console.log(
+      `Running in direction ${direction} at y-x of ${y}-${x} and self is ${self}`
+    );
+    switch (direction) {
+      case 1: // Up
+        y--;
+        break;
+      case 2: // diagonally right up
+        x++, y--;
+        break;
+      case 3: // right
+        x++;
+        break;
+      case 4: // diagonally right down
+        x++, y++;
+        break;
+      case 5: // down
+        y++;
+        break;
+      case 6: // diagonally left down
+        x--, y++;
+        break;
+      case 7: // left
+        x--;
+        break;
+      case 8: // diagonally left up
+        x--, y--;
+        break;
+      // check if x or y hits 7
+    }
+    if (direction === 9) {
+      console.log("breaking as direction >= 9");
+      return;
+    }
+    if (y === boardLength || x === boardLength) {
+      console.log("breaking as y or x >= boardlength");
+      direction++;
+      recursiveCheckMove(direction, moveY, moveX);
+      return;
+    }
+
+    console.log(`running recursion for board at ${y}-${x}`);
+    console.log(board[y][x]);
+    if (board[y][x] === null) {
+      capturedSeedsInOneDirection = [];
+      direction++;
+      recursiveCheckMove(direction, moveY, moveX);
+    } else if (board[y][x] === opponent) {
+      console.log(`opponent logic running`);
+      capturedSeedsInOneDirection.push([y, x]);
+      console.log(`capturedSeedInOneDirection: ${capturedSeedsInOneDirection}`);
+      recursiveCheckMove(direction, y, x);
+    } else if (
+      board[y][x] === self &&
+      capturedSeedsInOneDirection.length !== 0
+    ) {
+      console.log(`Found self logic running`);
+      for (coord of capturedSeedsInOneDirection) {
+        seedsToFlip.push(coord);
+        console.log(`seedsToFlip is ${seedsToFlip}`);
+      }
+      if (!getAllCapturedSeeds) {
+        isLegalMove = true;
+        return;
+      }
+      capturedSeedsInOneDirection = [];
+      console.log(
+        `cleared capturedSeedsInOneDirection > ${capturedSeedsInOneDirection}`
+      );
+      direction++;
+      recursiveCheckMove(direction, moveY, moveX);
+    } else if (
+      board[y][x] === self &&
+      capturedSeedsInOneDirection.length === 0
+    ) {
+      direction++;
+      recursiveCheckMove(direction, moveY, moveX);
+    }
+  }
+  recursiveCheckMove(direction, y, x);
+  if (seedsToFlip.length > 0) {
+    isLegalMove = true;
+  }
+  return [isLegalMove, seedsToFlip];
+}
+
+function flipSeeds(seedsToFlip, currPlayer, board) {
+  for (let [posY, posX] of seedsToFlip) {
+    board[posY][posX] = currPlayer;
+  }
+  updateBoardDisplay(board);
+  return board;
 }

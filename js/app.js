@@ -1,10 +1,12 @@
 let [board, currPlayer] = setUpBoard(10);
 
-allCells = document.querySelector(".game");
+allCells = document.querySelector("#game");
 allCells.addEventListener("click", (event) => {
-  const x = parseInt(event.target.getAttribute("x"));
-  const y = parseInt(event.target.getAttribute("y"));
-  [board, currPlayer] = placeSeed(y, x, currPlayer);
+  if (event.target.getAttribute("class") === "dt") {
+    const x = parseInt(event.target.getAttribute("x"));
+    const y = parseInt(event.target.getAttribute("y"));
+    [board, currPlayer] = placeSeed(y, x, currPlayer);
+  }
 });
 // updateBoardDisplay(board);
 

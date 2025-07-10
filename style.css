@@ -1,8 +1,8 @@
-.title {
+#title {
   width: 100vw;
 }
 
-.game {
+#game {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -15,7 +15,7 @@
   font: white;
 }
 
-.reset {
+#reset {
   margin: 20px auto;
 }
 

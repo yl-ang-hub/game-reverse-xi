@@ -55,7 +55,7 @@ function updateBoardDisplay(board) {
     newNode.setAttribute("x", i);
     row.appendChild(newNode);
   }
-  game = document.querySelector(".game");
+  game = document.querySelector("#game");
   for (let i = 0; i < size; i++) {
     const newNode = row.cloneNode(true);
     newNode.setAttribute("y", i);
@@ -88,9 +88,9 @@ function changePlayer(currPlayer) {
   }
   currPlayerDisplay = document.querySelector("h2");
   if (currPlayer === 0) {
-    currPlayerDisplay.innerText = "Current Player: Computer (0)";
+    currPlayerDisplay.innerText = "Current Player: User (0)";
   } else {
-    currPlayerDisplay.innerText = "Current Player: User (1)";
+    currPlayerDisplay.innerText = "Current Player: Computer (1)";
   }
   return currPlayer;
 }

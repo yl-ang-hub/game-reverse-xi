@@ -1,8 +1,20 @@
-#title {
-  width: 100vw;
+h1 {
+  text-align: center;
 }
 
-#game {
+.solid-black {
+  border: 1px solid black;
+}
+
+/* body {
+  color: black;
+} */
+
+/* #title {
+  width: 100vw;
+} */
+
+/* #game {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -13,18 +25,18 @@
   width: 500px;
   background-color: lightblue;
   font: white;
-}
+} */
 
-#reset {
+/* #reset {
   margin: 20px auto;
-}
+} */
 
-.row {
+/* .row {
   display: flex;
   justify-content: space-between;
-}
+} */
 
-.dt {
+/* .dt {
   border: 1px solid black;
   padding: 15px 20px;
-}
+} */

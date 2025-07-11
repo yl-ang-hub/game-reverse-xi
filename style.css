@@ -17,8 +17,15 @@ h1 {
   height: 100vh;
 }
 
+.table-colour {
+  background-color: rgb(59, 24, 24);
+}
+
 .solid-black {
   border: 1px solid black;
+}
+.solid-black-2 {
+  border: 2px solid black;
 }
 
 #game {

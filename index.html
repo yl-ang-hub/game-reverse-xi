@@ -20,7 +20,7 @@
   </head>
   <body>
     <div class="container">
-      <div class="row" id="title">
+      <div class="row my-3 align-items-center" id="title">
         <div class="col-md-2 fs-4 fw-bold">New Game</div>
         <div class="col-md-8">
           <h1 class="col=md-8 text-center fw-bold">Reverse-Xi</h1>
@@ -36,20 +36,21 @@
           />
         </div>
       </div>
-      <div class="row" id="main">
+      <div class="row my-3" id="main">
         <div class="col-md-2" id="computer">comp seeds and move</div>
         <div class="col-md-8">
-          <div class="row solid-black" id="game">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis
-            illum, eveniet deserunt iusto alias sint! Pariatur harum quibusdam
-            necessitatibus. Aspernatur nam, atque ipsum ipsa quia nobis
-            reprehenderit. Eligendi, incidunt doloribus.
+          <div class="row my-2 solid-black table-colour" id="game-container">
+            <div class="col-md-1"></div>
+            <div class="col my-2 solid-black-2" id="game"></div>
+            <div class="col-md-1"></div>
           </div>
-          <div class="row" id="messagebox">
+          <div class="row my-2" id="messagebox">
             <p class="text-center">Will Slim Shady please stand up?</p>
           </div>
         </div>
-        <div class="col-md-2" id="player">player seeds and move</div>
+        <div class="col-md-2 align-self-end" id="player">
+          player seeds and move
+        </div>
       </div>
       <div class="row" id="gamestate">
         <h2>Current Player: User (0)</h2>

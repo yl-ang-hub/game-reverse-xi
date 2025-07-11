@@ -34,7 +34,7 @@ function placeSeed(y, x, currPlayer) {
     board = flipSeeds(seedsToFlip, currPlayer, board);
     currPlayer = changePlayer(currPlayer);
   } else {
-    console.log("Sorry, your move is illegal. Try again.");
+    updateMessageDisplay("", isLegalMove);
   }
   // Note that check already been done beforehand to ensure player def have legal moves
   return [board, currPlayer];
@@ -148,4 +148,15 @@ function flipSeeds(seedsToFlip, currPlayer, board) {
   }
   updateBoardDisplay(board);
   return board;
+}
+
+function changePlayer(currPlayer) {
+  if (currPlayer === 1) {
+    currPlayer = 0;
+    currPlayerDisplay.innerText = "Current Player: User (0)";
+  } else {
+    currPlayer = 1;
+    currPlayerDisplay.innerText = "Current Player: Computer (1)";
+  }
+  return currPlayer;
 }

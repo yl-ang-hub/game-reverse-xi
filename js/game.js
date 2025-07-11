@@ -2,9 +2,11 @@
 
 /* -------------------------------------- Variables -------------------------------------- */
 let boardLength;
+let isPrevMoveLegal;
 /* ------------------------------ Cached Reference Elements ------------------------------ */
 const game = document.querySelector("#game");
 const currPlayerDisplay = document.querySelector("h2");
+const messageBox = document.querySelector("#messagebox");
 
 /* -------------------------------------- Functions -------------------------------------- */
 
@@ -36,8 +38,7 @@ function setUpBoard(size) {
   board[5][2] = board[4][3] = board[4][1] = 0;
   board[2][2] = board[6][2] = board[4][0] = 1;
 
-  // TODO: Display board on screen
-  // updateBoardDisplay(board);
+  updateBoardDisplay(board);
   return [board, 0];
 }
 
@@ -51,7 +52,7 @@ function resetGame(board) {
 }
 
 function updateBoardDisplay(board) {
-  const oldBoard = document.querySelectorAll(".row");
+  const oldBoard = document.querySelectorAll("#board-row");
   oldBoard.forEach((row) => row.remove());
 
   // Create board HTML elements - Create a row with 8 sqr
@@ -59,6 +60,7 @@ function updateBoardDisplay(board) {
   row.setAttribute("class", "row");
   row.setAttribute("id", "board-row");
   dt = document.createElement("div");
+  dt.setAttribute("class", "col solid-black");
   dt.setAttribute("id", "dt");
   for (let i = 0; i < boardLength; i++) {
     const newSqrNode = dt.cloneNode(true);
@@ -71,7 +73,7 @@ function updateBoardDisplay(board) {
   for (let i = 0; i < boardLength; i++) {
     const newNode = row.cloneNode(true);
     newNode.setAttribute("y", i);
-    newNodeChildren = newNode.querySelectorAll(".dt");
+    newNodeChildren = newNode.querySelectorAll("#dt");
     newNodeChildren.forEach((nodeChild) => nodeChild.setAttribute("y", i));
     game.appendChild(newNode);
   }
@@ -80,7 +82,7 @@ function updateBoardDisplay(board) {
   // Update elements with data
   boardElements = document.querySelectorAll("#board-row");
   boardElements.forEach((row, y) => {
-    let eachRow = row.querySelectorAll(".dt");
+    let eachRow = row.querySelectorAll("#dt");
     eachRow.forEach((data, x) => {
       if (board[y][x] === null) {
         console.log(`${data}: Running null attachment to display`);
@@ -96,13 +98,20 @@ function updateBoardDisplay(board) {
   });
 }
 
-function changePlayer(currPlayer) {
-  if (currPlayer === 1) {
-    currPlayer = 0;
-    currPlayerDisplay.innerText = "Current Player: User (0)";
-  } else {
-    currPlayer = 1;
-    currPlayerDisplay.innerText = "Current Player: Computer (1)";
+function updateMessageDisplay(message = "", isLegalMove) {
+  // Message for illegal move
+  if (
+    isLegalMove === false &&
+    (isPrevMoveLegal === "" || isPrevMoveLegal === false)
+  ) {
+    message = "Your selected move is also not allowed. Try another square!";
+  } else if (isLegalMove === false) {
+    message = "Sorry, your move is illegal. Try again.";
   }
-  return currPlayer;
+  isPrevMoveLegal = isLegalMove;
+
+  // TODO: Message for legal move & change of player
+
+  // Update message on screen
+  messageBox.innerText = message;
 }

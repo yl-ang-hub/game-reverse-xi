@@ -10,7 +10,8 @@ const newGameMenu = document.querySelector("#new-game-menu");
 /* -------------------------------------- Functions -------------------------------------- */
 /* ----------------------------------- Event Listeners ----------------------------------- */
 game.addEventListener("click", (event) => {
-  if (event.target.getAttribute("class") === "dt") {
+  if (event.target.getAttribute("id") === "dt") {
+    console.log(`board click is logged`);
     const x = parseInt(event.target.getAttribute("x"));
     const y = parseInt(event.target.getAttribute("y"));
     [board, currPlayer] = placeSeed(y, x, currPlayer);

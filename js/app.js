@@ -1,7 +1,12 @@
+/* -------------------------------------- Constants -------------------------------------- */
+/* -------------------------------------- Variables -------------------------------------- */
 let [board, currPlayer] = setUpBoard(10);
+// const resetButton = document.querySelector("#reset");
 
-allCells = document.querySelector("#game");
-allCells.addEventListener("click", (event) => {
+/* ------------------------------ Cached Reference Elements ------------------------------ */
+/* -------------------------------------- Functions -------------------------------------- */
+/* ----------------------------------- Event Listeners ----------------------------------- */
+game.addEventListener("click", (event) => {
   if (event.target.getAttribute("class") === "dt") {
     const x = parseInt(event.target.getAttribute("x"));
     const y = parseInt(event.target.getAttribute("y"));
@@ -10,8 +15,6 @@ allCells.addEventListener("click", (event) => {
 });
 // updateBoardDisplay(board);
 
-// checkEligibleMoves(2, 0, (self = 1), (opponent = 0), board);
-resetButton = document.querySelector("button");
-resetButton.addEventListener("click", (target) => {
-  [board, currPlayer] = resetGame(board);
-});
+// resetButton.addEventListener("click", (target) => {
+//   [board, currPlayer] = resetGame(board);
+// });

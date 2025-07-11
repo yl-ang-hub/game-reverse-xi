@@ -31,4 +31,10 @@ h1 {
   position: absolute;
   margin: auto auto auto -80px;
   background-color: #fff8e8;
+  display: none;
+}
+
+#close-game-menu {
+  height: 50px;
+  width: 70px;
 }

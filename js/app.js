@@ -4,8 +4,11 @@
 let board, boardLength, currPlayer, isPrevMoveLegal;
 
 /* ------------------------------ Cached Reference Elements ------------------------------ */
-const nav = document.querySelector("#title");
-const newGameMenu = document.querySelector("#new-game-menu");
+const nav = document.querySelector("#nav");
+const newGameDialog = document.querySelector("#new-game-dialog");
+const closeNewGameDialog = document.querySelector("#close-game-dialog");
+const rulesDialog = document.querySelector("#rules-dialog");
+const closeRulesBtn = document.querySelector("#close-rules-btn");
 
 const game = document.querySelector("#game");
 const currPlayerDisplay = document.querySelector("h2");
@@ -153,13 +156,21 @@ game.addEventListener("click", (event) => {
 // updateBoardDisplay(board);
 
 nav.addEventListener("click", (event) => {
-  console.log(`event is running`);
   if (event.target.innerText === "New Game") {
-    console.log(newGameMenu.style.display);
-    newGameMenu.style.display === "block"
-      ? (newGameMenu.style.display = "none")
-      : (newGameMenu.style.display = "block");
+    newGameDialog.showModal();
+  } else if (event.target.innerText === "Rules") {
+    rulesDialog.showModal();
+    console.log(rulesDialog);
   }
+});
+
+closeNewGameDialog.addEventListener("click", (event) => {
+  newGameDialog.close();
+});
+
+closeRulesBtn.addEventListener("click", (event) => {
+  rulesDialog.close();
+  console.log(closeRulesBtn, rulesDialog);
 });
 
 // resetButton.addEventListener("click", (target) => {

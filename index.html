@@ -20,7 +20,7 @@
   </head>
   <body>
     <div class="container">
-      <div class="row mt-5 mb-3 align-items-center" id="title">
+      <div class="row mt-5 mb-3 align-items-center" id="nav">
         <div class="col-md-2 align-self-start">
           <button type="button" class="btn btn-outline-dark fs-4 fw-bold">
             New Game
@@ -30,18 +30,13 @@
           <h1 class="col=md-8 text-center fw-bold">Reverse-XI</h1>
         </div>
         <div class="col-md-2 align-self-start">
-          <button type="button" class="btn btn-outline-dark fs-4 fw-bold">
+          <button
+            type="button"
+            class="btn btn-outline-dark fs-4 fw-bold"
+            id="rulesBtn"
+          >
             Rules
           </button>
-        </div>
-      </div>
-      <div class="container" id="new-game-menu">
-        <div class="row">
-          <img
-            class="position-absolute top-0 end-0"
-            id="close-game-menu"
-            src="./assets/icons/close.png"
-          />
         </div>
       </div>
       <div class="row my-3" id="main">
@@ -65,6 +60,51 @@
       </div>
       <div class="row"><button id="reset">Reset Game</button></div>
     </div>
+    <dialog closedby="any" id="new-game-dialog">
+      <div>
+        <p>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero
+          exercitationem, ipsam ea itaque repudiandae sapiente minima laboriosam
+          voluptatem ratione nulla quaerat consectetur impedit enim corrupti
+          quidem esse nostrum aspernatur quas!
+        </p>
+        <button class="btn btn-outline-dark" id="close-game-dialog">
+          Back to game
+        </button>
+      </div>
+    </dialog>
+    <dialog closedby="any" id="rules-dialog">
+      <p>This game is a slight variation of Reversi.</p>
+      <ul>
+        <li>
+          The board starts with 4 seeds placed in the middle of the board by
+          default, and player assigned to Black will always start with the first
+          move to place a seed.
+        </li>
+        <li>
+          After a seed is placed, any opponent’s seeds directly bordered by the
+          seed that was placed by the current player and any of the other
+          player’s seeds on the board are considered to be “captured”. The seeds
+          captured by the player will be “flip over” to reflect the player’s
+          colour.
+        </li>
+        <li>
+          Only moves that capture at least 1 of the opponent’s seed are
+          considered legal and allowed. If the player has no legal move left,
+          their turn is automatically passed and the opponent will take a turn
+          instead. Note that this may result in the opponent taking consecutive
+          moves until a legal move is possible for the player.
+        </li>
+        <li>
+          The game is deemed to end if all squares are completely filled or if
+          both players have no legal moves left.
+        </li>
+        <li>The player with the most seeds at the end of the game wins.</li>
+      </ul>
+      <button class="btn btn-outline-dark" id="close-rules-btn">
+        Back to game
+      </button>
+    </dialog>
     <!-- <script src="./js/game.js"></script> -->
     <script src="./js/app.js"></script>
     <script src="./js/logic.js"></script>

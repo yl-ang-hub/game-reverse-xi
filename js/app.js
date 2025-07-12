@@ -8,7 +8,7 @@ const nav = document.querySelector("#nav");
 const newGameDialog = document.querySelector("#new-game-dialog");
 const closeNewGameDialog = document.querySelector("#close-game-dialog");
 const rulesDialog = document.querySelector("#rules-dialog");
-const closeRulesBtn = document.querySelector("#close-rules-btn");
+const closeRulesBtn = document.querySelector("#close-rules-dialog");
 
 const game = document.querySelector("#game");
 const currPlayerDisplay = document.querySelector("h2");

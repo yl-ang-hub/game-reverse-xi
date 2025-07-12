@@ -39,6 +39,56 @@
           </button>
         </div>
       </div>
+      <div class="row" id="landing-page">
+          <p><b>Your name: </b><input name="username" type="text" /></p>
+          <p>
+            <b>Choose your board size: </b>
+            <input type="radio" id="board-size" name="board-size" value="8" />
+            8x8
+            <input type="radio" id="board-size" name="board-size" value="10" />
+            10x10
+            <input type="radio" id="board-size" name="board-size" value="12" />
+            12x12
+          </p>
+          <p>
+            <b>Mode:</b>
+            <input
+              type="radio"
+              id="game-mode"
+              name="game-mode"
+              value="normal"
+            />
+            Normal
+            <input type="radio" id="game-mode" name="game-mode" value="crazy" />
+            Crazy
+          </p>
+          <p>
+            <b>Difficulty Level:</b>
+            <input
+              type="radio"
+              id="difficulty"
+              name="difficulty"
+              value="Easy"
+            />
+            Easy
+            <input
+              type="radio"
+              id="difficulty"
+              name="difficulty"
+              value="Intermediate"
+            />
+            Intermediate
+            <input
+              type="radio"
+              id="difficulty"
+              name="difficulty"
+              value="Hard"
+            />
+            Hard
+          </p>
+          <p><input type="submit" value="Start Game"></p>
+        </form>
+      </div>
       <div class="row my-3" id="main">
         <div class="col-md-2" id="computer">comp seeds and move</div>
         <div class="col-md-8">
@@ -58,19 +108,19 @@
       <div class="row" id="gamestate">
         <h2>Current Player: User (0)</h2>
       </div>
-      <div class="row"><button id="reset">Reset Game</button></div>
     </div>
     <dialog closedby="any" id="new-game-dialog">
       <div>
         <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero
-          exercitationem, ipsam ea itaque repudiandae sapiente minima laboriosam
-          voluptatem ratione nulla quaerat consectetur impedit enim corrupti
-          quidem esse nostrum aspernatur quas!
+          <button class="btn btn-outline-dark" id="close-game-dialog">
+            Back to game
+          </button>
         </p>
-        <button class="btn btn-outline-dark" id="close-game-dialog">
-          Back to game
-        </button>
+        <p>
+          <button class="btn btn-outline-danger" id="restart-game">
+            Start New Game!
+          </button>
+        </p>
       </div>
     </dialog>
     <dialog closedby="any" id="rules-dialog">
@@ -101,7 +151,7 @@
         </li>
         <li>The player with the most seeds at the end of the game wins.</li>
       </ul>
-      <button class="btn btn-outline-dark" id="close-rules-btn">
+      <button class="btn btn-outline-dark" id="close-rules-dialog">
         Back to game
       </button>
     </dialog>

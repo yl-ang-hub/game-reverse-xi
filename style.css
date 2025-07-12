@@ -17,8 +17,9 @@ h1 {
   height: 100vh;
 }
 
-.table-colour {
-  background-color: rgb(59, 24, 24);
+.board-square {
+  width: 50px;
+  height: 50px;
 }
 
 .solid-black {
@@ -30,6 +31,13 @@ h1 {
 
 #game {
   background-color: #2d6946;
+  border: 20px solid black;
+}
+
+#seed {
+  height: 38px;
+  width: 38px;
+  border-radius: 20px;
 }
 
 #new-game-menu {
@@ -44,4 +52,12 @@ h1 {
 #close-game-menu {
   height: 50px;
   width: 70px;
+}
+
+.black-seed {
+  background-color: black;
+}
+
+.white-seed {
+  background-color: white;
 }

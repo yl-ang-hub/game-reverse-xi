@@ -151,12 +151,7 @@ function flipSeeds(seedsToFlip, currPlayer, board) {
 }
 
 function changePlayer(currPlayer) {
-  if (currPlayer === 1) {
-    currPlayer = 0;
-    currPlayerDisplay.innerText = "Current Player: User (0)";
-  } else {
-    currPlayer = 1;
-    currPlayerDisplay.innerText = "Current Player: Computer (1)";
-  }
+  currPlayer ? (currPlayer = 0) : (currPlayer = 1);
+  updatePlayerDisplay(currPlayer);
   return currPlayer;
 }

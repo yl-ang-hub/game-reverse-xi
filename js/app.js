@@ -6,9 +6,11 @@ let board, boardLength, currPlayer, isPrevMoveLegal;
 /* ------------------------------ Cached Reference Elements ------------------------------ */
 const nav = document.querySelector("#title");
 const newGameMenu = document.querySelector("#new-game-menu");
+
 const game = document.querySelector("#game");
 const currPlayerDisplay = document.querySelector("h2");
 const messageBox = document.querySelector("#messagebox");
+
 // const resetButton = document.querySelector("#reset");
 
 /* -------------------------------------- Functions -------------------------------------- */
@@ -41,8 +43,10 @@ function setUpBoard(size) {
   board[5][2] = board[4][3] = board[4][1] = 0;
   board[2][2] = board[6][2] = board[4][0] = 1;
 
+  currPlayer = 0;
   updateBoardDisplay(board);
-  return [board, 0];
+  updatePlayerDisplay(currPlayer);
+  return [board, currPlayer];
 }
 
 function resetGame(board) {
@@ -63,12 +67,19 @@ function updateBoardDisplay(board) {
   row.setAttribute("class", "row");
   row.setAttribute("id", "board-row");
   dt = document.createElement("div");
-  dt.setAttribute("class", "col solid-black");
+  dt.setAttribute("class", "col solid-black board-square");
   dt.setAttribute("id", "dt");
+  seed = document.createElement("div");
+  seed.setAttribute("class", "row no-seed");
+  seed.setAttribute("id", "seed");
+  dt.appendChild(seed);
+  console.log(dt);
   for (let i = 0; i < boardLength; i++) {
     const newSqrNode = dt.cloneNode(true);
     newSqrNode.setAttribute("x", i);
+    newSqrNode.querySelector("#seed").setAttribute("x", i);
     row.appendChild(newSqrNode);
+    console.log(newSqrNode);
     console.log("Row with 8 sqr is generating");
   }
 
@@ -76,8 +87,12 @@ function updateBoardDisplay(board) {
   for (let i = 0; i < boardLength; i++) {
     const newNode = row.cloneNode(true);
     newNode.setAttribute("y", i);
-    newNodeChildren = newNode.querySelectorAll("#dt");
-    newNodeChildren.forEach((nodeChild) => nodeChild.setAttribute("y", i));
+    newNode
+      .querySelectorAll("#dt")
+      .forEach((nodeChild) => nodeChild.setAttribute("y", i));
+    newNode
+      .querySelectorAll("#seed")
+      .forEach((seedNode) => seedNode.setAttribute("y", i));
     game.appendChild(newNode);
   }
   console.log(game);
@@ -87,15 +102,16 @@ function updateBoardDisplay(board) {
   boardElements.forEach((row, y) => {
     let eachRow = row.querySelectorAll("#dt");
     eachRow.forEach((data, x) => {
+      const seedNode = data.querySelector("div");
       if (board[y][x] === null) {
-        console.log(`${data}: Running null attachment to display`);
-        data.innerText = "_";
+        // console.log(`${data}: Running null attachment to display`);
+        seedNode.setAttribute("class", "row no-seed");
       } else if (board[y][x] === 0) {
-        console.log(`${data}: Running 0 attachment to display`);
-        data.innerText = 0;
+        // console.log(`${data}: Running 0 attachment to display`);
+        seedNode.setAttribute("class", "row black-seed");
       } else if (board[y][x] === 1) {
-        console.log(`${data}: Running 1 attachment to display`);
-        data.innerText = 1;
+        // console.log(`${data}: Running 1 attachment to display`);
+        seedNode.setAttribute("class", "row white-seed");
       }
     });
   });
@@ -119,14 +135,20 @@ function updateMessageDisplay(message = "", isLegalMove) {
   messageBox.innerText = message;
 }
 
+function updatePlayerDisplay(currPlayer) {
+  if (currPlayer) {
+    currPlayerDisplay.innerText = "Current Player: Computer (White)";
+  } else {
+    currPlayerDisplay.innerText = "Current Player: User (Black)";
+  }
+}
+
 /* ----------------------------------- Event Listeners ----------------------------------- */
 game.addEventListener("click", (event) => {
-  if (event.target.getAttribute("id") === "dt") {
-    console.log(`board click is logged`);
-    const x = parseInt(event.target.getAttribute("x"));
-    const y = parseInt(event.target.getAttribute("y"));
-    [board, currPlayer] = placeSeed(y, x, currPlayer);
-  }
+  console.log(`board click is logged`);
+  const x = parseInt(event.target.getAttribute("x"));
+  const y = parseInt(event.target.getAttribute("y"));
+  [board, currPlayer] = placeSeed(y, x, currPlayer);
 });
 // updateBoardDisplay(board);
 

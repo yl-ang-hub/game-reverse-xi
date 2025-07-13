@@ -30,6 +30,16 @@ h1 {
   border: 2px solid black;
 }
 
+#landing-page {
+  margin: 0 0 0 18vw;
+  display: none;
+}
+
+#main,
+#gamestate {
+  /* display: none; */
+}
+
 #game {
   background-color: #2d6946;
   border: 20px solid black;
@@ -39,6 +49,7 @@ h1 {
   height: 38px;
   width: 38px;
   border-radius: 20px;
+  margin: 5px auto auto -5px;
 }
 
 .black-seed {
@@ -47,10 +58,6 @@ h1 {
 
 .white-seed {
   background-color: white;
-}
-
-#landing-page {
-  margin: 0px 200px;
 }
 
 /* Dialogs */

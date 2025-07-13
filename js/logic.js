@@ -4,29 +4,18 @@
 /* -------------------------------------- Functions -------------------------------------- */
 /* ----------------------------------- Event Listeners ----------------------------------- */
 
-function placeSeed(y, x, currPlayer) {
+function placeSeed(y, x) {
   /**
-   * Return [board, currPlayer]
+   * @return [board, currPlayer]
    */
-  if (!board[y][x] === null) {
-    // TODO - code this
-    console.log("illegal move");
-    return board;
+  if (board[y][x] !== null) {
+    const message = "Please choose an empty square.";
+    updateMessageDisplay(message);
+    return;
   }
-  // else if (!hasAvailableMove(board)) {
-  //   console.log(`No eligible move left for ${currPlayer}`);
-  //   changePlayer();
-  //   return board;
-  // }
+  // Note that check already been done beforehand to ensure player def have legal moves
 
-  const [isLegalMove, seedsToFlip] = checkMove(
-    1,
-    y,
-    x,
-    currPlayer,
-    board,
-    true
-  );
+  const [isLegalMove, seedsToFlip] = checkMove(1, y, x, true);
 
   // TODO: remove isLegalMove if checkMove not to be used for checking availableMoves
   if (isLegalMove) {
@@ -36,17 +25,16 @@ function placeSeed(y, x, currPlayer) {
   } else {
     updateMessageDisplay("", isLegalMove);
   }
-  // Note that check already been done beforehand to ensure player def have legal moves
-  return [board, currPlayer];
+  return;
 }
 
-function checkMove(direction, y, x, self, board, getAllCapturedSeeds = false) {
+function checkMove(direction, y, x, getAllCapturedSeeds = false) {
   /**
    * Wrapper for recursive function
    */
   const moveY = y,
     moveX = x,
-    opponent = self ? 0 : 1;
+    opponent = currPlayer ? 0 : 1;
   let seedsToFlip = [],
     capturedSeedsInOneDirection = [],
     isLegalMove = false;
@@ -57,7 +45,7 @@ function checkMove(direction, y, x, self, board, getAllCapturedSeeds = false) {
      */
     console.log(`moveY and moveX is ${moveY} and ${moveX}`);
     console.log(
-      `Running in direction ${direction} at y-x of ${y}-${x} and self is ${self}`
+      `Running in direction ${direction} at y-x of ${y}-${x} and current player is ${currPlayer}`
     );
     switch (direction) {
       case 1: // Up
@@ -90,8 +78,9 @@ function checkMove(direction, y, x, self, board, getAllCapturedSeeds = false) {
       console.log("breaking as direction >= 9");
       return;
     }
-    if (y === boardLength || x === boardLength) {
+    if (y === -1 || x === -1 || y === boardLength || x === boardLength) {
       console.log("breaking as y or x >= boardlength");
+      capturedSeedsInOneDirection = [];
       direction++;
       recursiveCheckMove(direction, moveY, moveX);
       return;
@@ -109,7 +98,7 @@ function checkMove(direction, y, x, self, board, getAllCapturedSeeds = false) {
       console.log(`capturedSeedInOneDirection: ${capturedSeedsInOneDirection}`);
       recursiveCheckMove(direction, y, x);
     } else if (
-      board[y][x] === self &&
+      board[y][x] === currPlayer &&
       capturedSeedsInOneDirection.length !== 0
     ) {
       console.log(`Found self logic running`);
@@ -128,7 +117,7 @@ function checkMove(direction, y, x, self, board, getAllCapturedSeeds = false) {
       direction++;
       recursiveCheckMove(direction, moveY, moveX);
     } else if (
-      board[y][x] === self &&
+      board[y][x] === currPlayer &&
       capturedSeedsInOneDirection.length === 0
     ) {
       direction++;
@@ -152,6 +141,9 @@ function flipSeeds(seedsToFlip, currPlayer, board) {
 
 function changePlayer(currPlayer) {
   currPlayer ? (currPlayer = 0) : (currPlayer = 1);
-  updatePlayerDisplay(currPlayer);
+  if (currPlayer) {
+    updateMessageDisplay("Computer is playing.");
+  } else {
+    updateMessageDisplay("It's your turn!");
   return currPlayer;
 }

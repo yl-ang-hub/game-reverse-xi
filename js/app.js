@@ -48,7 +48,7 @@ function setUpBoard(size) {
 
   currPlayer = 0;
   updateBoardDisplay(board);
-  updatePlayerDisplay(currPlayer);
+  updateMessageDisplay("It's your turn!");
   return [board, currPlayer];
 }
 
@@ -138,20 +138,12 @@ function updateMessageDisplay(message = "", isLegalMove) {
   messageBox.innerText = message;
 }
 
-function updatePlayerDisplay(currPlayer) {
-  if (currPlayer) {
-    currPlayerDisplay.innerText = "Current Player: Computer (White)";
-  } else {
-    currPlayerDisplay.innerText = "Current Player: User (Black)";
-  }
-}
-
 /* ----------------------------------- Event Listeners ----------------------------------- */
 game.addEventListener("click", (event) => {
   console.log(`board click is logged`);
   const x = parseInt(event.target.getAttribute("x"));
   const y = parseInt(event.target.getAttribute("y"));
-  [board, currPlayer] = placeSeed(y, x, currPlayer);
+  [board, currPlayer] = placeSeed(y, x);
 });
 // updateBoardDisplay(board);
 

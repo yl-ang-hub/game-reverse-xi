@@ -64,6 +64,7 @@ h1 {
 dialog {
   max-width: 60vw;
   background-color: #fff8e8;
+  font-size: 20px;
   /* display: flex; */
   /* justify-items: center; */
 }

@@ -23,13 +23,13 @@ const blackPlayerDisplay = document.querySelector("#black-move-msg");
 function setUpBoard(size) {
   /**
    * Initialise a new board
-   * @return array representing the board
+   * @return array representing the board (likely required for game reset)
    * Assume 0 is black, 1 is white, and null is empty
    * Coordinates for board is board[posY][posX]
    */
   console.log(`setUpBoard is running`);
   boardLength = size;
-  let board = [];
+  board = [];
   mid1 = boardLength / 2 - 1;
   mid2 = boardLength / 2;
   for (let y = 0; y < boardLength; y++) {
@@ -56,22 +56,21 @@ function setUpBoard(size) {
   // ];
 
   currPlayer = 0;
-  updateBoardDisplay(board);
-  updatePlayerDisplay(currPlayer);
+  updateBoardDisplay();
+  updatePlayerDisplay();
   updateMessageDisplay("It's your turn!");
-  return [board, currPlayer];
 }
 
-function resetGame(board) {
+function resetGame() {
   /**
    * Resets the game and return a new board
    * @return array representing the board
    */
-  delete board;
+  board = [];
   return setUpBoard(boardLength);
 }
 
-function updateBoardDisplay(board) {
+function updateBoardDisplay() {
   const oldBoard = document.querySelectorAll("#board-row");
   oldBoard.forEach((row) => row.remove());
 
@@ -148,7 +147,7 @@ function updateMessageDisplay(message = "", isLegalMove) {
   messageBox.innerText = message;
 }
 
-function updatePlayerDisplay(currPlayer) {
+function updatePlayerDisplay() {
   if (currPlayer) {
     blackPlayerDisplay.innerText = "";
     whitePlayerDisplay.innerText = "White's turn!";
@@ -165,7 +164,7 @@ game.addEventListener("click", (event) => {
   const y = parseInt(event.target.getAttribute("y"));
   placeSeed(y, x);
 });
-// updateBoardDisplay(board);
+// updateBoardDisplay();
 
 nav.addEventListener("click", (event) => {
   if (event.target.innerText === "New Game") {

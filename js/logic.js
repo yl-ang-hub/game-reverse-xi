@@ -20,7 +20,7 @@ function placeSeed(y, x) {
   // TODO: remove isLegalMove if checkMove not to be used for checking availableMoves
   if (isLegalMove) {
     board[y][x] = currPlayer;
-    board = flipSeeds(seedsToFlip, currPlayer, board);
+    flipSeeds(seedsToFlip);
     changePlayer();
   } else {
     updateMessageDisplay("", isLegalMove);
@@ -131,12 +131,11 @@ function checkMove(direction, y, x, getAllCapturedSeeds = false) {
   return [isLegalMove, seedsToFlip];
 }
 
-function flipSeeds(seedsToFlip, currPlayer, board) {
+function flipSeeds(seedsToFlip) {
   for (let [posY, posX] of seedsToFlip) {
     board[posY][posX] = currPlayer;
   }
-  updateBoardDisplay(board);
-  return board;
+  updateBoardDisplay();
 }
 
 function changePlayer() {
@@ -146,5 +145,8 @@ function changePlayer() {
   } else {
     updateMessageDisplay("It's your turn!");
   }
-  updatePlayerDisplay(currPlayer);
+  updatePlayerDisplay();
 }
+
+// TODO: Code checkEndGame()
+//   - message="How about clicking on the top left button to start a new game?"

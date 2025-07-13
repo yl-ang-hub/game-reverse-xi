@@ -5,7 +5,7 @@
 body {
   background-image: url("./assets/bg.jpg");
   font-family: "Kalam", cursive;
-  font-size: 18px;
+  font-size: 24px;
 }
 
 h1 {
@@ -74,4 +74,33 @@ dialog {
 
 #close-rules-dialog {
   align-self: center;
+}
+
+#white-move-msg,
+#black-move-msg {
+  margin: 10px auto;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#white-seed-counter,
+#black-seed-counter {
+  background-color: #7d2b2b;
+  border-radius: 10px;
+  font-size: 32px;
+  color: rgb(209, 239, 209);
+}
+
+#white-seed-display,
+#black-seed-display {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+}
+
+#white-seed-display {
+  background-color: white;
+}
+#black-seed-display {
+  background-color: black;
 }

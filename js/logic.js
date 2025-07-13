@@ -21,7 +21,7 @@ function placeSeed(y, x) {
   if (isLegalMove) {
     board[y][x] = currPlayer;
     board = flipSeeds(seedsToFlip, currPlayer, board);
-    currPlayer = changePlayer(currPlayer);
+    changePlayer();
   } else {
     updateMessageDisplay("", isLegalMove);
   }
@@ -139,12 +139,12 @@ function flipSeeds(seedsToFlip, currPlayer, board) {
   return board;
 }
 
-function changePlayer(currPlayer) {
+function changePlayer() {
   currPlayer ? (currPlayer = 0) : (currPlayer = 1);
   if (currPlayer) {
     updateMessageDisplay("Computer is playing.");
   } else {
     updateMessageDisplay("It's your turn!");
-    return currPlayer;
   }
+  updatePlayerDisplay(currPlayer);
 }

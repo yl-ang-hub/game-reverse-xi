@@ -13,6 +13,8 @@ const closeRulesBtn = document.querySelector("#close-rules-dialog");
 const game = document.querySelector("#game");
 const currPlayerDisplay = document.querySelector("h2");
 const messageBox = document.querySelector("#messagebox");
+const whitePlayerDisplay = document.querySelector("#white-move-msg");
+const blackPlayerDisplay = document.querySelector("#black-move-msg");
 
 // const resetButton = document.querySelector("#reset");
 
@@ -23,6 +25,7 @@ function setUpBoard(size) {
    * Initialise a new board
    * @return array representing the board
    * Assume 0 is black, 1 is white, and null is empty
+   * Coordinates for board is board[posY][posX]
    */
   console.log(`setUpBoard is running`);
   boardLength = size;
@@ -41,13 +44,20 @@ function setUpBoard(size) {
     }
   }
   // Temporary code for debug; note [posY][posX]
-  board[5][6] = 0;
-  board[5][5] = board[6][5] = board[3][2] = 0;
-  board[5][2] = board[4][3] = board[4][1] = 0;
-  board[2][2] = board[6][2] = board[4][0] = 1;
+  // board = [
+  //   [null, null, null, null, null, null, null, null, null, null],
+  //   [null, null, null, null, null, null, null, null, null, null],
+  //   [null, null, 1, null, null, null, null, null, null, null],
+  //   [null, null, 0, null, null, null, null, null, null, null],
+  //   [1, 0, null, 0, 0, 1, null, null, null, null],
+  //   [null, null, 0, null, 1, 0, 0, null, null, null],
+  //   [null, null, 1, null, null, null, null, null, null, null],
+  //   [null, null, null, null, null, null, null, null, null, null],
+  // ];
 
   currPlayer = 0;
   updateBoardDisplay(board);
+  updatePlayerDisplay(currPlayer);
   updateMessageDisplay("It's your turn!");
   return [board, currPlayer];
 }
@@ -138,12 +148,22 @@ function updateMessageDisplay(message = "", isLegalMove) {
   messageBox.innerText = message;
 }
 
+function updatePlayerDisplay(currPlayer) {
+  if (currPlayer) {
+    blackPlayerDisplay.innerText = "";
+    whitePlayerDisplay.innerText = "White's turn!";
+  } else {
+    whitePlayerDisplay.innerText = "";
+    blackPlayerDisplay.innerText = "Black's turn!";
+  }
+}
+
 /* ----------------------------------- Event Listeners ----------------------------------- */
 game.addEventListener("click", (event) => {
   console.log(`board click is logged`);
   const x = parseInt(event.target.getAttribute("x"));
   const y = parseInt(event.target.getAttribute("y"));
-  [board, currPlayer] = placeSeed(y, x);
+  placeSeed(y, x);
 });
 // updateBoardDisplay(board);
 

@@ -145,5 +145,6 @@ function changePlayer(currPlayer) {
     updateMessageDisplay("Computer is playing.");
   } else {
     updateMessageDisplay("It's your turn!");
-  return currPlayer;
+    return currPlayer;
+  }
 }

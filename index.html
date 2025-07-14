@@ -18,152 +18,170 @@
     />
     <link href="./style.css" rel="stylesheet" />
   </head>
-  <body>
-    <div class="container">
-      <div class="row mt-4 mb-3 align-items-center" id="nav">
-        <div class="col-md-2 align-self-start">
-          <button type="button" class="btn btn-outline-dark fs-4 fw-bold">
-            New Game
-          </button>
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Reverse-XI</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap"
+        rel="stylesheet"
+      />
+      <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+        crossorigin="anonymous"
+      />
+      <link href="./style.css" rel="stylesheet" />
+    </head>
+    <body>
+      <div class="container">
+        <div class="row mt-4 mb-3 align-items-center" id="nav">
+          <div class="col-md-2 align-self-start">
+            <button type="button" class="btn btn-outline-dark fs-4 fw-bold">
+              New Game
+            </button>
+          </div>
+          <div class="col-md-8">
+            <h1 class="col=md-8 text-center fw-bold">Reverse-XI</h1>
+          </div>
+          <div class="col-md-2 align-self-start">
+            <button
+              type="button"
+              class="btn btn-outline-dark fs-4 fw-bold"
+              id="rulesBtn"
+            >
+              Rules
+            </button>
+          </div>
         </div>
-        <div class="col-md-8">
-          <h1 class="col=md-8 text-center fw-bold">Reverse-XI</h1>
+        <div class="row" id="landing-page">
+          <form id="new-game-form">
+            <p>
+              <b>Your name: </b
+              ><input class="landing-pg-col-2" name="username" type="text" />
+            </p>
+            <p>
+              <b>Choose your board size: </b>
+              <input
+                type="radio"
+                class="landing-pg-col-2"
+                name="board-size"
+                value="8"
+              />
+              8x8
+              <input type="radio" name="board-size" value="10" />
+              10x10
+              <input type="radio" name="board-size" value="12" />
+              12x12
+            </p>
+            <p>
+              <b>Mode:</b>
+              <input type="radio" name="game-mode" value="normal" />
+              Normal
+              <input type="radio" name="game-mode" value="crazy" />
+              Crazy
+            </p>
+            <p>
+              <b>Difficulty Level:</b>
+              <input type="radio" name="difficulty" value="Easy" />
+              Easy
+              <input type="radio" name="difficulty" value="Intermediate" />
+              Intermediate
+              <input type="radio" name="difficulty" value="Hard" />
+              Hard
+            </p>
+            <p><input type="submit" value="Start Game" /></p>
+          </form>
         </div>
-        <div class="col-md-2 align-self-start">
-          <button
-            type="button"
-            class="btn btn-outline-dark fs-4 fw-bold"
-            id="rulesBtn"
-          >
-            Rules
-          </button>
+        <div class="row my-3 d-lg-none" id="main">
+          <div class="col-md-2" id="white-dashboard">
+            <div
+              class="row py-1 justify-content-around align-items-center"
+              id="white-seed-counter"
+            >
+              <b class="col-md-4" id="white-seed-count">25</b>
+              <div class="col-md-2" id="white-seed-display"></div>
+            </div>
+            <div class="row" id="white-move-msg"></div>
+          </div>
+          <div class="col-md-8">
+            <div class="row my-2" id="game-container">
+              <div class="col-md-1"></div>
+              <div class="col my-2 solid-black-2" id="game"></div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row my-2">
+              <p class="text-center" id="messagebox">
+                Will Slim Shady please stand up?
+              </p>
+            </div>
+          </div>
+          <div class="col-md-2 align-self-end" id="black-dashboard">
+            <div class="row" id="black-move-msg"></div>
+            <div
+              class="row py-1 justify-content-around align-items-center"
+              id="black-seed-counter"
+            >
+              <b class="col-md-4" id="black-seed-count">25</b>
+              <div class="col-md-2" id="black-seed-display"></div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row" id="landing-page">
-          <p><b>Your name: </b><input class="landing-pg-col-2" name="username" type="text" /></p>
+      <dialog closedby="any" id="new-game-dialog">
+        <div>
           <p>
-            <b>Choose your board size: </b>
-            <input type="radio" class="landing-pg-col-2" id="board-size" name="board-size" value="8" />
-            8x8
-            <input type="radio" id="board-size" name="board-size" value="10" />
-            10x10
-            <input type="radio" id="board-size" name="board-size" value="12" />
-            12x12
+            <button class="btn btn-outline-dark" id="close-game-dialog">
+              Back to game
+            </button>
           </p>
           <p>
-            <b>Mode:</b>
-            <input
-              type="radio"
-              id="game-mode"
-              name="game-mode"
-              value="normal"
-            />
-            Normal
-            <input type="radio" id="game-mode" name="game-mode" value="crazy" />
-            Crazy
+            <button class="btn btn-outline-danger" id="restart-game">
+              Start New Game!
+            </button>
           </p>
-          <p>
-            <b>Difficulty Level:</b>
-            <input
-              type="radio"
-              id="difficulty"
-              name="difficulty"
-              value="Easy"
-            />
-            Easy
-            <input
-              type="radio"
-              id="difficulty"
-              name="difficulty"
-              value="Intermediate"
-            />
-            Intermediate
-            <input
-              type="radio"
-              id="difficulty"
-              name="difficulty"
-              value="Hard"
-            />
-            Hard
-          </p>
-          <p><input type="submit" value="Start Game"></p>
-        </form>
-      </div>
-      <div class="row my-3" id="main">
-        <div class="col-md-2" id="white-dashboard">
-          <div class="row py-1 justify-content-around align-items-center" id="white-seed-counter">
-            <b class="col-md-4" id="white-seed-count">25</b>
-            <div class="col-md-2" id="white-seed-display"></div>
-          </div>
-          <div class="row" id="white-move-msg"></div>
         </div>
-        <div class="col-md-8">
-          <div class="row my-2" id="game-container">
-            <div class="col-md-1"></div>
-            <div class="col my-2 solid-black-2" id="game"></div>
-            <div class="col-md-1"></div>
-          </div>
-          <div class="row my-2">
-            <p class="text-center" id="messagebox">Will Slim Shady please stand up?</p>
-          </div>
-        </div>
-        <div class="col-md-2 align-self-end" id="black-dashboard">
-          <div class="row" id="black-move-msg"></div>
-          <div class="row py-1 justify-content-around align-items-center" id="black-seed-counter">
-            <b class="col-md-4" id="black-seed-count">25</b>
-            <div class="col-md-2" id="black-seed-display"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <dialog closedby="any" id="new-game-dialog">
-      <div>
-        <p>
-          <button class="btn btn-outline-dark" id="close-game-dialog">
-            Back to game
-          </button>
-        </p>
-        <p>
-          <button class="btn btn-outline-danger" id="restart-game">
-            Start New Game!
-          </button>
-        </p>
-      </div>
-    </dialog>
-    <dialog closedby="any" id="rules-dialog">
-      <p>This game is a slight variation of Reversi.</p>
-      <ul>
-        <li>
-          The board starts with 4 seeds placed in the middle of the board by
-          default, and player assigned to Black will always start with the first
-          move to place a seed.
-        </li>
-        <li>
-          After a seed is placed, any opponent’s seeds directly bordered by the
-          seed that was placed by the current player and any of the other
-          player’s seeds on the board are considered to be “captured”. The seeds
-          captured by the player will be “flip over” to reflect the player’s
-          colour.
-        </li>
-        <li>
-          Only moves that capture at least 1 of the opponent’s seed are
-          considered legal and allowed. If the player has no legal move left,
-          their turn is automatically passed and the opponent will take a turn
-          instead. Note that this may result in the opponent taking consecutive
-          moves until a legal move is possible for the player.
-        </li>
-        <li>
-          The game is deemed to end if all squares are completely filled or if
-          both players have no legal moves left.
-        </li>
-        <li>The player with the most seeds at the end of the game wins.</li>
-      </ul>
-      <button class="btn btn-outline-dark" id="close-rules-dialog">
-        Back to game
-      </button>
-    </dialog>
-    <!-- <script src="./js/game.js"></script> -->
-    <script src="./js/app.js"></script>
-    <script src="./js/logic.js"></script>
-  </body>
+      </dialog>
+      <dialog closedby="any" id="rules-dialog">
+        <p>This game is a slight variation of Reversi.</p>
+        <ul>
+          <li>
+            The board starts with 4 seeds placed in the middle of the board by
+            default, and player assigned to Black will always start with the
+            first move to place a seed.
+          </li>
+          <li>
+            After a seed is placed, any opponent’s seeds directly bordered by
+            the seed that was placed by the current player and any of the other
+            player’s seeds on the board are considered to be “captured”. The
+            seeds captured by the player will be “flip over” to reflect the
+            player’s colour.
+          </li>
+          <li>
+            Only moves that capture at least 1 of the opponent’s seed are
+            considered legal and allowed. If the player has no legal move left,
+            their turn is automatically passed and the opponent will take a turn
+            instead. Note that this may result in the opponent taking
+            consecutive moves until a legal move is possible for the player.
+          </li>
+          <li>
+            The game is deemed to end if all squares are completely filled or if
+            both players have no legal moves left.
+          </li>
+          <li>The player with the most seeds at the end of the game wins.</li>
+        </ul>
+        <button class="btn btn-outline-dark" id="close-rules-dialog">
+          Back to game
+        </button>
+      </dialog>
+      <!-- <script src="./js/game.js"></script> -->
+      <script src="./js/app.js"></script>
+      <script src="./js/logic.js"></script>
+    </body>
+  </html>
 </html>

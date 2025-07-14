@@ -23,21 +23,17 @@ h1 {
   height: 50px;
 }
 
+/* To delete solid-black if not using */
 .solid-black {
   border: 1px solid black;
 }
+
 .solid-black-2 {
   border: 2px solid black;
 }
 
 #landing-page {
   margin: 0 0 0 18vw;
-  display: none;
-}
-
-#main,
-#gamestate {
-  /* display: none; */
 }
 
 #game {

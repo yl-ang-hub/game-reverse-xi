@@ -2,6 +2,8 @@
 
 /* -------------------------------------- Variables -------------------------------------- */
 let board, boardLength, currPlayer, isPrevMoveLegal;
+let formElements;
+let p1Name;
 
 /* ------------------------------ Cached Reference Elements ------------------------------ */
 const nav = document.querySelector("#nav");
@@ -9,6 +11,10 @@ const newGameDialog = document.querySelector("#new-game-dialog");
 const closeNewGameDialog = document.querySelector("#close-game-dialog");
 const rulesDialog = document.querySelector("#rules-dialog");
 const closeRulesBtn = document.querySelector("#close-rules-dialog");
+const newGameForm = document.getElementById("new-game-form");
+
+const landingPage = document.querySelector("#landing-page");
+const mainGameWindow = document.querySelector("#main");
 
 const game = document.querySelector("#game");
 const currPlayerDisplay = document.querySelector("h2");
@@ -19,6 +25,17 @@ const blackPlayerDisplay = document.querySelector("#black-move-msg");
 // const resetButton = document.querySelector("#reset");
 
 /* -------------------------------------- Functions -------------------------------------- */
+
+function init(name, size, mode, difficulty) {
+  p1Name = name;
+  console.log(p1Name);
+  setUpBoard(size);
+  // TODO: Do something with mode
+  // TODO: Trigger computer player based on difficulty chose
+
+  landingPage.classList.add("d-lg-none");
+  mainGameWindow.classList.remove("d-lg-none");
+}
 
 function setUpBoard(size) {
   /**
@@ -85,14 +102,13 @@ function updateBoardDisplay() {
   seed.setAttribute("class", "row no-seed");
   seed.setAttribute("id", "seed");
   dt.appendChild(seed);
-  console.log(dt);
   for (let i = 0; i < boardLength; i++) {
     const newSqrNode = dt.cloneNode(true);
     newSqrNode.setAttribute("x", i);
     newSqrNode.querySelector("#seed").setAttribute("x", i);
     row.appendChild(newSqrNode);
-    console.log(newSqrNode);
-    console.log("Row with 8 sqr is generating");
+    // console.log(newSqrNode);
+    // console.log("Row with 8 sqr is generating");
   }
 
   // Create board HTML elements - Duplicate to 8 rows
@@ -107,7 +123,7 @@ function updateBoardDisplay() {
       .forEach((seedNode) => seedNode.setAttribute("y", i));
     game.appendChild(newNode);
   }
-  console.log(game);
+  // console.log(game);
 
   // Update elements with data
   boardElements = document.querySelectorAll("#board-row");
@@ -158,20 +174,30 @@ function updatePlayerDisplay() {
 }
 
 /* ----------------------------------- Event Listeners ----------------------------------- */
+newGameForm.addEventListener("submit", (event) => {
+  const input = [];
+  fields = newGameForm.elements;
+  for (field of fields) {
+    if (field.name && field.type !== "submit") {
+      input.push(field.value);
+    }
+  }
+  init(...input);
+  event.preventDefault();
+});
+
 game.addEventListener("click", (event) => {
-  console.log(`board click is logged`);
+  // console.log(`board click is logged`);
   const x = parseInt(event.target.getAttribute("x"));
   const y = parseInt(event.target.getAttribute("y"));
   placeSeed(y, x);
 });
-// updateBoardDisplay();
 
 nav.addEventListener("click", (event) => {
   if (event.target.innerText === "New Game") {
     newGameDialog.showModal();
   } else if (event.target.innerText === "Rules") {
     rulesDialog.showModal();
-    console.log(rulesDialog);
   }
 });
 
@@ -181,7 +207,7 @@ closeNewGameDialog.addEventListener("click", (event) => {
 
 closeRulesBtn.addEventListener("click", (event) => {
   rulesDialog.close();
-  console.log(closeRulesBtn, rulesDialog);
+  // console.log(closeRulesBtn, rulesDialog);
 });
 
 // resetButton.addEventListener("click", (target) => {
@@ -189,4 +215,3 @@ closeRulesBtn.addEventListener("click", (event) => {
 // });
 
 /* ---------------------------------------- Game ----------------------------------------- */
-[board, currPlayer] = setUpBoard(10);

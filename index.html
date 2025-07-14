@@ -63,7 +63,12 @@
           <form id="new-game-form">
             <p>
               <b>Your name: </b
-              ><input class="landing-pg-col-2" name="username" type="text" />
+              ><input
+                class="landing-pg-col-2"
+                name="username"
+                type="text"
+                required
+              />
             </p>
             <p>
               <b>Choose your board size: </b>
@@ -72,6 +77,7 @@
                 class="landing-pg-col-2"
                 name="board-size"
                 value="8"
+                checked
               />
               8x8
               <input type="radio" name="board-size" value="10" />
@@ -81,14 +87,14 @@
             </p>
             <p>
               <b>Mode:</b>
-              <input type="radio" name="game-mode" value="normal" />
+              <input type="radio" name="game-mode" value="normal" checked />
               Normal
               <input type="radio" name="game-mode" value="crazy" />
               Crazy
             </p>
             <p>
               <b>Difficulty Level:</b>
-              <input type="radio" name="difficulty" value="Easy" />
+              <input type="radio" name="difficulty" value="Easy" checked />
               Easy
               <input type="radio" name="difficulty" value="Intermediate" />
               Intermediate

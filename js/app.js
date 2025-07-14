@@ -28,24 +28,30 @@ const blackPlayerDisplay = document.querySelector("#black-move-msg");
 
 function init(name, size, mode, difficulty) {
   p1Name = name;
-  console.log(p1Name);
-  setUpBoard(size);
+  console.log(p1Name, size, mode, difficulty);
   // TODO: Do something with mode
   // TODO: Trigger computer player based on difficulty chose
 
   landingPage.classList.add("d-lg-none");
   mainGameWindow.classList.remove("d-lg-none");
+
+  setUpBoard(size);
+  updateBoardDisplay();
+  enableBoardInteraction();
+  updatePlayerDisplay();
+  updateMessageDisplay("It's your turn!");
 }
 
 function setUpBoard(size) {
   /**
-   * Initialise a new board
-   * @return array representing the board (likely required for game reset)
-   * Assume 0 is black, 1 is white, and null is empty
-   * Coordinates for board is board[posY][posX]
+   * Initialise a new board and update display.
    */
-  console.log(`setUpBoard is running`);
-  boardLength = size;
+
+  // Assume 0 is black, 1 is white, and null is empty
+  // Coordinates for board is board[posY][posX]
+
+  // console.log(`setUpBoard is running`);
+  boardLength = parseInt(size);
   board = [];
   mid1 = boardLength / 2 - 1;
   mid2 = boardLength / 2;
@@ -72,10 +78,19 @@ function setUpBoard(size) {
   //   [null, null, null, null, null, null, null, null, null, null],
   // ];
 
+  // Temporary code for debug; no further moves for both sides.
+  board = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 1, null, null],
+    [0, 0, 0, 0, 0, 0, null, null],
+    [0, 0, 0, 0, 0, 0, null, 1],
+    [0, 0, 0, 0, 0, 0, 0, null],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+  ];
+
   currPlayer = 0;
-  updateBoardDisplay();
-  updatePlayerDisplay();
-  updateMessageDisplay("It's your turn!");
 }
 
 function resetGame() {
@@ -95,15 +110,15 @@ function updateBoardDisplay() {
   row = document.createElement("div");
   row.setAttribute("class", "row");
   row.setAttribute("id", "board-row");
-  dt = document.createElement("div");
-  dt.setAttribute("class", "col solid-black board-square");
-  dt.setAttribute("id", "dt");
+  sqr = document.createElement("div");
+  sqr.setAttribute("class", "col ratio-1x1 solid-black board-square");
+  sqr.setAttribute("id", "sqr");
   seed = document.createElement("div");
   seed.setAttribute("class", "row no-seed");
   seed.setAttribute("id", "seed");
-  dt.appendChild(seed);
+  sqr.appendChild(seed);
   for (let i = 0; i < boardLength; i++) {
-    const newSqrNode = dt.cloneNode(true);
+    const newSqrNode = sqr.cloneNode(true);
     newSqrNode.setAttribute("x", i);
     newSqrNode.querySelector("#seed").setAttribute("x", i);
     row.appendChild(newSqrNode);
@@ -116,7 +131,7 @@ function updateBoardDisplay() {
     const newNode = row.cloneNode(true);
     newNode.setAttribute("y", i);
     newNode
-      .querySelectorAll("#dt")
+      .querySelectorAll("#sqr")
       .forEach((nodeChild) => nodeChild.setAttribute("y", i));
     newNode
       .querySelectorAll("#seed")
@@ -128,7 +143,7 @@ function updateBoardDisplay() {
   // Update elements with data
   boardElements = document.querySelectorAll("#board-row");
   boardElements.forEach((row, y) => {
-    let eachRow = row.querySelectorAll("#dt");
+    let eachRow = row.querySelectorAll("#sqr");
     eachRow.forEach((data, x) => {
       const seedNode = data.querySelector("div");
       if (board[y][x] === null) {
@@ -169,8 +184,28 @@ function updatePlayerDisplay() {
     whitePlayerDisplay.innerText = "White's turn!";
   } else {
     whitePlayerDisplay.innerText = "";
-    blackPlayerDisplay.innerText = "Black's turn!";
+    blackPlayerDisplay.innerText = `${p1Name}'s turn!`;
   }
+}
+
+function endGameDisplay() {
+  disableBoardInteraction();
+  // TODO: getWinner()
+  updateMessageDisplay("The game has ended.");
+}
+
+function eventPlaceSeed(event) {
+  const x = parseInt(event.target.getAttribute("x"));
+  const y = parseInt(event.target.getAttribute("y"));
+  placeSeed(y, x);
+}
+
+function enableBoardInteraction() {
+  game.addEventListener("click", eventPlaceSeed);
+}
+
+function disableBoardInteraction() {
+  game.removeEventListener("click", eventPlaceSeed);
 }
 
 /* ----------------------------------- Event Listeners ----------------------------------- */
@@ -178,19 +213,15 @@ newGameForm.addEventListener("submit", (event) => {
   const input = [];
   fields = newGameForm.elements;
   for (field of fields) {
-    if (field.name && field.type !== "submit") {
+    console.log(field.checked);
+    if (field.name && field.type !== "submit" && field.type !== "radio") {
+      input.push(field.value);
+    } else if (field.name && field.type === "radio" && field.checked) {
       input.push(field.value);
     }
   }
   init(...input);
   event.preventDefault();
-});
-
-game.addEventListener("click", (event) => {
-  // console.log(`board click is logged`);
-  const x = parseInt(event.target.getAttribute("x"));
-  const y = parseInt(event.target.getAttribute("y"));
-  placeSeed(y, x);
 });
 
 nav.addEventListener("click", (event) => {

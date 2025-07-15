@@ -4,6 +4,57 @@
 /* -------------------------------------- Functions -------------------------------------- */
 /* ----------------------------------- Event Listeners ----------------------------------- */
 
+function setUpBoard(size) {
+  /**
+   * Initialise a new board and update display.
+   */
+
+  // Assume 0 is black, 1 is white, and null is empty
+  // Coordinates for board is board[posY][posX]
+
+  // console.log(`setUpBoard is running`);
+  boardLength = parseInt(size);
+  board = [];
+  mid1 = boardLength / 2 - 1;
+  mid2 = boardLength / 2;
+  for (let y = 0; y < boardLength; y++) {
+    board[y] = [];
+    for (let x = 0; x < boardLength; x++) {
+      board[y][x] = null;
+      if ((y === mid1 && x === mid1) || (y === mid2 && x === mid2)) {
+        board[y][x] = 0;
+      } else if ((y === mid1) & (x === mid2) || (y === mid2 && x === mid1)) {
+        board[y][x] = 1;
+      }
+    }
+  }
+  // Temporary code for debug; note [posY][posX]
+  // board = [
+  //   [null, null, null, null, null, null, null, null, null, null],
+  //   [null, null, null, null, null, null, null, null, null, null],
+  //   [null, null, 1, null, null, null, null, null, null, null],
+  //   [null, null, 0, null, null, null, null, null, null, null],
+  //   [1, 0, null, 0, 0, 1, null, null, null, null],
+  //   [null, null, 0, null, 1, 0, 0, null, null, null],
+  //   [null, null, 1, null, null, null, null, null, null, null],
+  //   [null, null, null, null, null, null, null, null, null, null],
+  // ];
+
+  // Temporary code for debug; no further moves for both sides.
+  // board = [
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 1, 0],
+  //   [0, 0, 0, 0, 0, 1, null, null],
+  //   [0, 0, 0, 0, 0, 0, null, null],
+  //   [0, 0, 0, 0, 0, 0, null, 1],
+  //   [0, 0, 0, 0, 0, 0, 0, null],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  // ];
+
+  currPlayer = 0;
+}
+
 function placeSeed(y, x) {
   /**
    * @return [board, currPlayer]
@@ -15,13 +66,14 @@ function placeSeed(y, x) {
   }
   // Note that check already been done beforehand to ensure player def have legal moves
 
-  const [isLegalMove, seedsToFlip] = checkMove(1, y, x, currPlayer, true);
+  const [isLegalMove, capturedSeeds] = checkMove(1, y, x, currPlayer, true);
 
-  console.log(`seed placed at [${y}, ${x}]`);
   let endGame = false;
   if (isLegalMove) {
+    console.log(`seed placed at [${y}, ${x}]`);
     board[y][x] = currPlayer;
-    flipSeeds(seedsToFlip);
+    flipSeeds(capturedSeeds);
+    updateSeedCounterDisplay(countSeeds());
     endGame = checkEndGame();
     if (!endGame) {
       changePlayer();
@@ -31,7 +83,6 @@ function placeSeed(y, x) {
   }
 
   if (endGame) {
-    // TODO: Code end game
     endGameDisplay();
   }
 }
@@ -46,12 +97,12 @@ function checkMove(
   /**
    * Wrapper for recursive function
    * @return hasLegalMove: boolean
-   * @return [hasLegalMove, seedsToFlip]
+   * @return [hasLegalMove, capturedSeeds]
    */
   const moveY = y,
     moveX = x,
     opponentToCheck = playerForChecking ? 0 : 1;
-  let seedsToFlip = [],
+  let capturedSeeds = [],
     capturedSeedsInOneDirection = [],
     isLegalMove = false;
 
@@ -123,8 +174,8 @@ function checkMove(
     ) {
       // console.log(`Found self logic running`);
       for (coord of capturedSeedsInOneDirection) {
-        seedsToFlip.push(coord);
-        // console.log(`seedsToFlip is ${seedsToFlip}`);
+        capturedSeeds.push(coord);
+        // console.log(`capturedSeeds is ${capturedSeeds}`);
       }
       capturedSeedsInOneDirection = [];
       direction++;
@@ -138,21 +189,35 @@ function checkMove(
     }
   }
   recursiveCheckMove(direction, y, x);
-  if (seedsToFlip.length > 0) {
+  if (capturedSeeds.length > 0) {
     isLegalMove = true;
   }
   if (!getAllCapturedSeeds) {
     return isLegalMove;
   } else {
-    return [isLegalMove, seedsToFlip];
+    return [isLegalMove, capturedSeeds];
   }
 }
 
-function flipSeeds(seedsToFlip) {
-  for (let [posY, posX] of seedsToFlip) {
+function flipSeeds(capturedSeeds) {
+  for (let [posY, posX] of capturedSeeds) {
     board[posY][posX] = currPlayer;
   }
   updateBoardDisplay();
+}
+
+function countSeeds() {
+  const seedsCounter = { black: 0, white: 0 };
+  for (row of board) {
+    for (square of row) {
+      if (square === 0) {
+        seedsCounter.black++;
+      } else if (square === 1) {
+        seedsCounter.white++;
+      }
+    }
+  }
+  return seedsCounter;
 }
 
 function changePlayer() {
@@ -167,11 +232,10 @@ function changePlayer() {
 
 function checkEndGame() {
   const emptySquares = [];
-  const opponent = 1;
+  let opponent = 1;
   if (currPlayer) {
     opponent = 0;
   }
-  console.log(opponent);
   for (const [y, row] of board.entries()) {
     for (const [x, square] of row.entries()) {
       if (square === null) {

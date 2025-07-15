@@ -3,7 +3,8 @@
 /* -------------------------------------- Variables -------------------------------------- */
 let board, boardLength, currPlayer, isPrevMoveLegal;
 let formElements;
-let p1Name;
+let p1Name,
+  p2Name = "Computer";
 
 /* ------------------------------ Cached Reference Elements ------------------------------ */
 const nav = document.querySelector("#nav");
@@ -15,6 +16,9 @@ const newGameForm = document.getElementById("new-game-form");
 
 const landingPage = document.querySelector("#landing-page");
 const mainGameWindow = document.querySelector("#main");
+
+const blackSeedCount = document.querySelector("#black-seed-count");
+const whiteSeedCount = document.querySelector("#white-seed-count");
 
 const game = document.querySelector("#game");
 const currPlayerDisplay = document.querySelector("h2");
@@ -40,57 +44,7 @@ function init(name, size, mode, difficulty) {
   enableBoardInteraction();
   updatePlayerDisplay();
   updateMessageDisplay("It's your turn!");
-}
-
-function setUpBoard(size) {
-  /**
-   * Initialise a new board and update display.
-   */
-
-  // Assume 0 is black, 1 is white, and null is empty
-  // Coordinates for board is board[posY][posX]
-
-  // console.log(`setUpBoard is running`);
-  boardLength = parseInt(size);
-  board = [];
-  mid1 = boardLength / 2 - 1;
-  mid2 = boardLength / 2;
-  for (let y = 0; y < boardLength; y++) {
-    board[y] = [];
-    for (let x = 0; x < boardLength; x++) {
-      board[y][x] = null;
-      if ((y === mid1 && x === mid1) || (y === mid2 && x === mid2)) {
-        board[y][x] = 0;
-      } else if ((y === mid1) & (x === mid2) || (y === mid2 && x === mid1)) {
-        board[y][x] = 1;
-      }
-    }
-  }
-  // Temporary code for debug; note [posY][posX]
-  // board = [
-  //   [null, null, null, null, null, null, null, null, null, null],
-  //   [null, null, null, null, null, null, null, null, null, null],
-  //   [null, null, 1, null, null, null, null, null, null, null],
-  //   [null, null, 0, null, null, null, null, null, null, null],
-  //   [1, 0, null, 0, 0, 1, null, null, null, null],
-  //   [null, null, 0, null, 1, 0, 0, null, null, null],
-  //   [null, null, 1, null, null, null, null, null, null, null],
-  //   [null, null, null, null, null, null, null, null, null, null],
-  // ];
-
-  // Temporary code for debug; no further moves for both sides.
-  board = [
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 0, 1, null, null],
-    [0, 0, 0, 0, 0, 0, null, null],
-    [0, 0, 0, 0, 0, 0, null, 1],
-    [0, 0, 0, 0, 0, 0, 0, null],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-  ];
-
-  currPlayer = 0;
+  updateSeedCounterDisplay(countSeeds());
 }
 
 function resetGame() {
@@ -160,6 +114,11 @@ function updateBoardDisplay() {
   });
 }
 
+function updateSeedCounterDisplay(seedsCounter) {
+  blackSeedCount.innerText = seedsCounter["black"];
+  whiteSeedCount.innerText = seedsCounter["white"];
+}
+
 function updateMessageDisplay(message = "", isLegalMove) {
   // Message for illegal move
   if (
@@ -181,7 +140,7 @@ function updateMessageDisplay(message = "", isLegalMove) {
 function updatePlayerDisplay() {
   if (currPlayer) {
     blackPlayerDisplay.innerText = "";
-    whitePlayerDisplay.innerText = "White's turn!";
+    whitePlayerDisplay.innerText = `${p2Name}'s turn!`;
   } else {
     whitePlayerDisplay.innerText = "";
     blackPlayerDisplay.innerText = `${p1Name}'s turn!`;
@@ -189,8 +148,16 @@ function updatePlayerDisplay() {
 }
 
 function endGameDisplay() {
+  const seedsCounter = countSeeds();
+  const message = "";
+  if (seedsCounter["black"] === seedsCounter["white"]) {
+    message = "The game has ended. You tied!";
+  } else if (seedsCounter["black"] > seedsCounter["white"]) {
+    message = `The game has ended. ${p1Name} won!`;
+  } else {
+    message = `The game has ended. ${p2Name} won!`;
+  }
   disableBoardInteraction();
-  // TODO: getWinner()
   updateMessageDisplay("The game has ended.");
 }
 

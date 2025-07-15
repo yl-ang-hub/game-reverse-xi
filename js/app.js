@@ -13,6 +13,7 @@ const closeNewGameDialog = document.querySelector("#close-game-dialog");
 const rulesDialog = document.querySelector("#rules-dialog");
 const closeRulesBtn = document.querySelector("#close-rules-dialog");
 const newGameForm = document.getElementById("new-game-form");
+const newGameBtn = document.querySelector("#restart-game");
 
 const landingPage = document.querySelector("#landing-page");
 const mainGameWindow = document.querySelector("#main");
@@ -25,8 +26,6 @@ const currPlayerDisplay = document.querySelector("h2");
 const messageBox = document.querySelector("#messagebox");
 const whitePlayerDisplay = document.querySelector("#white-move-msg");
 const blackPlayerDisplay = document.querySelector("#black-move-msg");
-
-// const resetButton = document.querySelector("#reset");
 
 /* -------------------------------------- Functions -------------------------------------- */
 
@@ -53,7 +52,10 @@ function resetGame() {
    * @return array representing the board
    */
   board = [];
-  return setUpBoard(boardLength);
+  disableBoardInteraction();
+  updateMessageDisplay("");
+  updatePlayerDisplay("");
+  updateSeedCounterDisplay({ black: 0, white: 0 });
 }
 
 function updateBoardDisplay() {
@@ -147,7 +149,7 @@ function updatePlayerDisplay() {
   }
 }
 
-function endGameDisplay() {
+function endGameSequence() {
   const seedsCounter = countSeeds();
   const message = "";
   if (seedsCounter["black"] === seedsCounter["white"]) {
@@ -161,18 +163,18 @@ function endGameDisplay() {
   updateMessageDisplay("The game has ended.");
 }
 
-function eventPlaceSeed(event) {
-  const x = parseInt(event.target.getAttribute("x"));
-  const y = parseInt(event.target.getAttribute("y"));
-  placeSeed(y, x);
-}
-
 function enableBoardInteraction() {
   game.addEventListener("click", eventPlaceSeed);
 }
 
 function disableBoardInteraction() {
   game.removeEventListener("click", eventPlaceSeed);
+}
+
+function eventPlaceSeed(event) {
+  const x = parseInt(event.target.getAttribute("x"));
+  const y = parseInt(event.target.getAttribute("y"));
+  placeSeed(y, x);
 }
 
 /* ----------------------------------- Event Listeners ----------------------------------- */
@@ -208,8 +210,10 @@ closeRulesBtn.addEventListener("click", (event) => {
   // console.log(closeRulesBtn, rulesDialog);
 });
 
-// resetButton.addEventListener("click", (target) => {
-//   [board, currPlayer] = resetGame(board);
-// });
+newGameBtn.addEventListener("click", (target) => {
+  newGameDialog.close();
+  landingPage.classList.remove("d-lg-none");
+  mainGameWindow.classList.add("d-lg-none");
+});
 
 /* ---------------------------------------- Game ----------------------------------------- */

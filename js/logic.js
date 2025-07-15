@@ -55,7 +55,7 @@ function setUpBoard(size) {
   currPlayer = 0;
 }
 
-function placeSeed(y, x) {
+function playerPlaceSeed(y, x) {
   /**
    * @return [board, currPlayer]
    */
@@ -66,7 +66,7 @@ function placeSeed(y, x) {
   }
   // Note that check already been done beforehand to ensure player def have legal moves
 
-  const [isLegalMove, capturedSeeds] = checkMove(1, y, x, currPlayer, true);
+  const [isLegalMove, capturedSeeds] = checkMove(y, x, currPlayer, true);
 
   let endGame = false;
   if (isLegalMove) {
@@ -85,10 +85,14 @@ function placeSeed(y, x) {
   if (endGame) {
     endGameDisplay();
   }
+
+  // if (currPlayer) {
+  //   getComputerMove()
+  //   // placeSeed()
+  // }
 }
 
 function checkMove(
-  direction,
   y,
   x,
   playerForChecking = currPlayer,
@@ -104,7 +108,8 @@ function checkMove(
     opponentToCheck = playerForChecking ? 0 : 1;
   let capturedSeeds = [],
     capturedSeedsInOneDirection = [],
-    isLegalMove = false;
+    isLegalMove = false,
+    direction = 1;
 
   function recursiveCheckMove(direction, y, x) {
     /**
@@ -243,12 +248,11 @@ function checkEndGame() {
       }
     }
   }
-
   // console.log(emptySquares);
   let hasLegalMove = false;
   emptySquares.forEach((coord) => {
     // console.log(`running checkMove() for`, coord[0], coord[1]);
-    if (checkMove(1, coord[0], coord[1], currPlayer, false)) {
+    if (checkMove(coord[0], coord[1], currPlayer, false)) {
       console.log(`found legal move`);
       hasLegalMove = true;
     }
@@ -257,7 +261,7 @@ function checkEndGame() {
     return false;
   }
   emptySquares.forEach((coord) => {
-    if (checkMove(1, coord[0], coord[1], opponent, false)) {
+    if (checkMove(coord[0], coord[1], opponent, false)) {
       console.log(`found legal move`);
       hasLegalMove = true;
     }

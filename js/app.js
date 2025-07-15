@@ -174,7 +174,7 @@ function disableBoardInteraction() {
 function eventPlaceSeed(event) {
   const x = parseInt(event.target.getAttribute("x"));
   const y = parseInt(event.target.getAttribute("y"));
-  placeSeed(y, x);
+  playerPlaceSeed(y, x);
 }
 
 /* ----------------------------------- Event Listeners ----------------------------------- */

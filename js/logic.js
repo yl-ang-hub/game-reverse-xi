@@ -90,7 +90,7 @@ function setUpBoard(size) {
   currPlayer = 0;
 }
 
-function placeSeed(y, x) {
+function runGame(y, x) {
   /**
    * Invokes functions to check on legality of moves, flip seeds, update display,
    * change player and check for end game for each of the player's turn.
@@ -101,40 +101,32 @@ function placeSeed(y, x) {
     return;
   }
   const [isLegalMove, capturedSeeds] = checkMove(y, x, currPlayer, true);
-  console.log(`${isLegalMove}`);
-  let endGame = false;
-  let skipCurrPlayer = false;
-  if (isLegalMove) {
-    console.log(`${currPlayer} places seed at [${y}, ${x}]`);
-    board[y][x] = currPlayer;
-    flipSeeds(capturedSeeds);
-    updateSeedCounterDisplay(countSeeds());
-    [endGame, skipNextPlayer] = checkEndGame();
-    console.log(`${endGame}, ${skipCurrPlayer}`);
-    if (!endGame && !skipNextPlayer) {
-      changePlayer();
-    } else if (!endGame && skipNextPlayer) {
-      let skippedName = undefined;
-      if (currPlayer) {
-        skippedName = p1Name;
-      } else {
-        skippedName = p2Name;
-      }
-      updateMessageDisplay(
-        `${skippedName} is skipped as he does not have any legal move left. `
-      );
-    } else if (endGame) {
-      endGameSequence();
-    }
-  } else {
+  if (!isLegalMove) {
     updateMessageDisplay("", isLegalMove);
+    return;
+  }
+
+  console.log(`${currPlayer} places seed at [${y}, ${x}]`);
+  placeAndFlipSeeds(y, x, capturedSeeds);
+  updateSeedCounterDisplay(countSeeds());
+  const [endGame, skipNextPlayer] = checkEndGame();
+
+  if (endGame) {
+    endGameSequence();
+  } else if (!endGame && !skipNextPlayer) {
+    changePlayer();
+  } else if (!endGame && skipNextPlayer) {
+    let skippedName = currPlayer ? p1Name : p2Name;
+    updateMessageDisplay(
+      `${skippedName}'s turn is skipped as they do not have any legal move left. `
+    );
   }
 
   if (currPlayer) {
     // TODO: Disable toggling on/off of board interaction if the computer logic runs very fast
     disableBoardInteraction();
     console.log(`Computer sequence is running and currPlayer is ${currPlayer}`);
-    runComputer();
+    setTimeout(runComputer, 1000);
   } else {
     enableBoardInteraction();
   }
@@ -253,7 +245,8 @@ function checkMove(
   }
 }
 
-function flipSeeds(capturedSeeds) {
+function placeAndFlipSeeds(y, x, capturedSeeds) {
+  board[y][x] = currPlayer;
   for (let [posY, posX] of capturedSeeds) {
     board[posY][posX] = currPlayer;
   }
@@ -288,7 +281,7 @@ function checkEndGame() {
   /**
    * @return {Array<boolean>} Array of two booleans specifying if it is end game and if
    * current player's turn should be skipped
-   * @description Checks for end game of either filled board or no moves left for both players
+   * @description Checks for end game of either filled board or skip next player
    */
   const emptySquares = [];
   let opponent = 1;

@@ -16,6 +16,7 @@ const newGameForm = document.getElementById("new-game-form");
 const newGameBtn = document.querySelector("#restart-game");
 
 const landingPage = document.querySelector("#landing-page");
+const mainInfo = document.querySelector("#main-info");
 const mainGameWindow = document.querySelector("#main");
 
 const blackSeedCount = document.querySelector("#black-seed-count");
@@ -33,10 +34,12 @@ function init(name, size, mode, difficulty) {
   p1Name = name;
   gameMode = mode;
   gameDifficulty = difficulty;
-  console.log(p1Name, size, mode, gameDifficulty);
   // TODO: Do something with mode
 
+  mainInfo.innerText = `${gameMode} Mode (${gameDifficulty})`;
+
   landingPage.classList.add("d-lg-none");
+  mainInfo.classList.remove("d-lg-none");
   mainGameWindow.classList.remove("d-lg-none");
 
   setUpBoard(size);
@@ -206,6 +209,7 @@ closeRulesBtn.addEventListener("click", (event) => {
 newGameBtn.addEventListener("click", (target) => {
   newGameDialog.close();
   landingPage.classList.remove("d-lg-none");
+  mainInfo.classList.add("d-lg-none");
   mainGameWindow.classList.add("d-lg-none");
 });
 

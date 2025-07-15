@@ -4,11 +4,11 @@
 /* -------------------------------------- Functions -------------------------------------- */
 function runComputer() {
   /**
-   * @description Invokes computer to make a move and place seed on the board
+   * @description Invokes functions for computer to make a move and place seed on the board
    */
   let [y, x] = getCalculatedMove();
   console.log(`Computer decided on a calculated move: ${y}, ${x}`);
-  placeSeed(y, x);
+  runGame(y, x);
 }
 
 function getCalculatedMove() {
@@ -159,7 +159,7 @@ function compIsBraining(y, x) {
 
   function recursiveCompCheckMove(direction, y, x) {
     /**
-     * Updates capturedSeeds
+     * @description Recursively search for opponent seeds to capture
      */
     // console.log(`moveY and moveX is ${moveY} and ${moveX}`);
     console.log(

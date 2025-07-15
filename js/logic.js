@@ -40,6 +40,7 @@ function setUpBoard(size) {
   //   [null, null, null, null, null, null, null, null, null, null],
   // ];
 
+  // TODO: Flip this board in multiple directions to test end-game code
   // Temporary code for debug; no further moves for both sides.
   // board = [
   //   [0, 0, 0, 0, 0, 0, 0, 0],
@@ -51,26 +52,26 @@ function setUpBoard(size) {
   //   [0, 0, 0, 0, 0, 0, 0, null],
   //   [0, 0, 0, 0, 0, 0, 0, 0],
   // ];
+  // TODO: Get a few more board layouts to test end game
 
   currPlayer = 0;
 }
 
-function playerPlaceSeed(y, x) {
+function placeSeed(y, x) {
   /**
-   * @return [board, currPlayer]
+   * Invokes functions to check on legality of moves, flip seeds, update display,
+   * change player and check for end game for each of the player's turn.
    */
   if (board[y][x] !== null) {
     const message = "Please choose an empty square.";
     updateMessageDisplay(message);
     return;
   }
-  // Note that check already been done beforehand to ensure player def have legal moves
-
   const [isLegalMove, capturedSeeds] = checkMove(y, x, currPlayer, true);
 
   let endGame = false;
   if (isLegalMove) {
-    console.log(`seed placed at [${y}, ${x}]`);
+    console.log(`${currPlayer} places seed at [${y}, ${x}]`);
     board[y][x] = currPlayer;
     flipSeeds(capturedSeeds);
     updateSeedCounterDisplay(countSeeds());
@@ -86,10 +87,10 @@ function playerPlaceSeed(y, x) {
     endGameDisplay();
   }
 
-  // if (currPlayer) {
-  //   getComputerMove()
-  //   // placeSeed()
-  // }
+  if (currPlayer) {
+    console.log(`Computer sequence is running and currPlayer is ${currPlayer}`);
+    runComputer();
+  }
 }
 
 function checkMove(

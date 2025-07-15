@@ -1,8 +1,8 @@
 /* -------------------------------------- Constants -------------------------------------- */
 
 /* -------------------------------------- Variables -------------------------------------- */
-let board, boardLength, currPlayer, isPrevMoveLegal;
-let formElements;
+let board, boardLength, currPlayer, gameMode, gameDifficulty;
+let isPrevMoveLegal;
 let p1Name,
   p2Name = "Computer";
 
@@ -31,7 +31,9 @@ const blackPlayerDisplay = document.querySelector("#black-move-msg");
 
 function init(name, size, mode, difficulty) {
   p1Name = name;
-  console.log(p1Name, size, mode, difficulty);
+  gameMode = mode;
+  gameDifficulty = difficulty;
+  console.log(p1Name, size, mode, gameDifficulty);
   // TODO: Do something with mode
   // TODO: Trigger computer player based on difficulty chose
 
@@ -163,18 +165,10 @@ function endGameSequence() {
   updateMessageDisplay("The game has ended.");
 }
 
-function enableBoardInteraction() {
-  game.addEventListener("click", eventPlaceSeed);
-}
-
-function disableBoardInteraction() {
-  game.removeEventListener("click", eventPlaceSeed);
-}
-
 function eventPlaceSeed(event) {
   const x = parseInt(event.target.getAttribute("x"));
   const y = parseInt(event.target.getAttribute("y"));
-  playerPlaceSeed(y, x);
+  placeSeed(y, x);
 }
 
 /* ----------------------------------- Event Listeners ----------------------------------- */
@@ -215,5 +209,13 @@ newGameBtn.addEventListener("click", (target) => {
   landingPage.classList.remove("d-lg-none");
   mainGameWindow.classList.add("d-lg-none");
 });
+
+function enableBoardInteraction() {
+  game.addEventListener("click", eventPlaceSeed);
+}
+
+function disableBoardInteraction() {
+  game.removeEventListener("click", eventPlaceSeed);
+}
 
 /* ---------------------------------------- Game ----------------------------------------- */

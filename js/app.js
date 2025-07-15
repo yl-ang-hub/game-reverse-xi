@@ -35,7 +35,6 @@ function init(name, size, mode, difficulty) {
   gameDifficulty = difficulty;
   console.log(p1Name, size, mode, gameDifficulty);
   // TODO: Do something with mode
-  // TODO: Trigger computer player based on difficulty chose
 
   landingPage.classList.add("d-lg-none");
   mainGameWindow.classList.remove("d-lg-none");
@@ -69,7 +68,7 @@ function updateBoardDisplay() {
   row.setAttribute("class", "row");
   row.setAttribute("id", "board-row");
   sqr = document.createElement("div");
-  sqr.setAttribute("class", "col ratio-1x1 solid-black board-square");
+  sqr.setAttribute("class", "ratio ratio-1x1 solid-black board-square");
   sqr.setAttribute("id", "sqr");
   seed = document.createElement("div");
   seed.setAttribute("class", "row no-seed");

@@ -114,7 +114,6 @@ function placeSeed(y, x) {
     if (!endGame && !skipNextPlayer) {
       changePlayer();
     } else if (!endGame && skipNextPlayer) {
-      // TODO: Code logic to skip curr player
       let skippedName = undefined;
       if (currPlayer) {
         skippedName = p1Name;

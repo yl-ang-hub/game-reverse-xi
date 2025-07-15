@@ -19,6 +19,8 @@ const landingPage = document.querySelector("#landing-page");
 const mainInfo = document.querySelector("#main-info");
 const mainGameWindow = document.querySelector("#main");
 
+const blackSeedCounter = document.querySelector("#black-seed-counter");
+const whiteSeedCounter = document.querySelector("#white-seed-counter");
 const blackSeedCount = document.querySelector("#black-seed-count");
 const whiteSeedCount = document.querySelector("#white-seed-count");
 
@@ -47,7 +49,7 @@ function init(name, size, mode, difficulty) {
   enableBoardInteraction();
   updatePlayerDisplay();
   updateMessageDisplay("It's your turn!");
-  updateSeedCounterDisplay(countSeeds());
+  updateSeedCountDisplay(countSeeds());
 }
 
 function resetGame() {
@@ -59,7 +61,7 @@ function resetGame() {
   disableBoardInteraction();
   updateMessageDisplay("");
   updatePlayerDisplay("");
-  updateSeedCounterDisplay({ black: 0, white: 0 });
+  updateSeedCountDisplay({ black: 0, white: 0 });
 }
 
 function updateBoardDisplay() {
@@ -120,9 +122,16 @@ function updateBoardDisplay() {
   });
 }
 
-function updateSeedCounterDisplay(seedsCounter) {
+function updateSeedCountDisplay(seedsCounter) {
   blackSeedCount.innerText = seedsCounter["black"];
   whiteSeedCount.innerText = seedsCounter["white"];
+}
+
+function animateSeedCounter() {
+  // TODO: Toggle background between red and grey
+  currPlayer
+    ? whiteSeedCounter.getAttribute("style", "background-color: #7d2b2b")
+    : blackSeedCounter.getAttribute("style", "background-color: lightgrey");
 }
 
 function updateMessageDisplay(message = "", isLegalMove) {

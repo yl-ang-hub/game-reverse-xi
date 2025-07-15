@@ -149,8 +149,9 @@ function checkMove(
 ) {
   /**
    * Wrapper for recursive function
-   * @return hasLegalMove: boolean
-   * @return [hasLegalMove, capturedSeeds]
+   * @return {boolean} Returns true if there are legal move(s) for the player
+   * @return {<Array<boolean, Array>>}: Returns true if there are legal move(s) and
+   * an Array of the coordinates of seeds that will be captured by the player
    */
   const moveY = y,
     moveX = x,

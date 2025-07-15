@@ -68,7 +68,7 @@ function updateBoardDisplay() {
   row.setAttribute("class", "row");
   row.setAttribute("id", "board-row");
   sqr = document.createElement("div");
-  sqr.setAttribute("class", "ratio ratio-1x1 solid-black board-square");
+  sqr.setAttribute("class", "ratio ratio-1x1 border border-dark board-square");
   sqr.setAttribute("id", "sqr");
   seed = document.createElement("div");
   seed.setAttribute("class", "row no-seed");
@@ -134,8 +134,6 @@ function updateMessageDisplay(message = "", isLegalMove) {
   }
   isPrevMoveLegal = isLegalMove;
 
-  // TODO: Message for legal move & change of player
-
   // Update message on screen
   messageBox.innerHTML = message;
 }
@@ -169,7 +167,7 @@ function endGameSequence() {
 function eventPlaceSeed(event) {
   const x = parseInt(event.target.getAttribute("x"));
   const y = parseInt(event.target.getAttribute("y"));
-  placeSeed(y, x);
+  runGame(y, x);
 }
 
 /* ----------------------------------- Event Listeners ----------------------------------- */

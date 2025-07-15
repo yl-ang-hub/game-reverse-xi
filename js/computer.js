@@ -36,7 +36,6 @@ function compLogicEasy(legalMoves) {
    * @return {(number|Array)} Coordinates [y,x] of the selected move.
    * @description Computer logic to select a move for a game difficulty of EASY.
    */
-  legalMoves.forEach((coord) => console.log(coord));
   const randMove = Math.floor(Math.random() * legalMoves.length);
   return [legalMoves[randMove][0], legalMoves[randMove][1]];
 }

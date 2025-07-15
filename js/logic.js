@@ -53,6 +53,16 @@ function setUpBoard(size) {
   //   [0, 0, 0, 0, 0, 0, 0, 0],
   // ];
   // TODO: Get a few more board layouts to test end game
+  board = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 1, 1, null],
+    [0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+  ];
 
   currPlayer = 0;
 }
@@ -84,12 +94,16 @@ function placeSeed(y, x) {
   }
 
   if (endGame) {
-    endGameDisplay();
+    endGameSequence();
   }
 
   if (currPlayer) {
+    // TODO: Disable toggling on/off of board interaction if the computer logic runs very fast
+    disableBoardInteraction();
     console.log(`Computer sequence is running and currPlayer is ${currPlayer}`);
     runComputer();
+  } else {
+    enableBoardInteraction();
   }
 }
 
@@ -248,6 +262,9 @@ function checkEndGame() {
         emptySquares.push([y, x]);
       }
     }
+  }
+  if (emptySquares.length === 0) {
+    return true;
   }
   // console.log(emptySquares);
   let hasLegalMove = false;

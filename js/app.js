@@ -138,7 +138,7 @@ function updateMessageDisplay(message = "", isLegalMove) {
   // TODO: Message for legal move & change of player
 
   // Update message on screen
-  messageBox.innerText = message;
+  messageBox.innerHTML = message;
 }
 
 function updatePlayerDisplay() {
@@ -153,16 +153,16 @@ function updatePlayerDisplay() {
 
 function endGameSequence() {
   const seedsCounter = countSeeds();
-  const message = "";
+  let message = "";
   if (seedsCounter["black"] === seedsCounter["white"]) {
     message = "The game has ended. You tied!";
   } else if (seedsCounter["black"] > seedsCounter["white"]) {
-    message = `The game has ended. ${p1Name} won!`;
+    message = `The game has ended. <span class="fw-bold text-primary">${p1Name}</span> won!`;
   } else {
-    message = `The game has ended. ${p2Name} won!`;
+    message = `The game has ended. <span class="fw-bold text-primary">${p2Name}</span> won!`;
   }
   disableBoardInteraction();
-  updateMessageDisplay("The game has ended.");
+  updateMessageDisplay(message);
 }
 
 function eventPlaceSeed(event) {

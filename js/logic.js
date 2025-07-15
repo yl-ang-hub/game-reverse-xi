@@ -52,17 +52,40 @@ function setUpBoard(size) {
   //   [0, 0, 0, 0, 0, 0, 0, null],
   //   [0, 0, 0, 0, 0, 0, 0, 0],
   // ];
+  // board = [
+  //   [0, 0, 0, null, null, 1, null, 0],
+  //   [0, 0, 1, 1, null, null, 0, 0],
+  //   [0, 0, 0, 1, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  // ];
+
   // TODO: Get a few more board layouts to test end game
-  board = [
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 0, 1, 1, null],
-    [0, 0, 0, 0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 0, 0, 1, 1],
-    [0, 0, 0, 0, 0, 0, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-  ];
+  // board = [
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, 1, 0],
+  //   [0, 0, 0, 0, 0, 1, 1, null],
+  //   [0, 0, 0, 0, 0, 0, 1, 0],
+  //   [0, 0, 0, 0, 0, 0, 1, 1],
+  //   [0, 0, 0, 0, 0, 0, 0, 1],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  // ];
+
+  // Test skip turn if currplayer has no legal move left
+  // board = [
+  //   [0, 0, 0, 0, 0, 0, 0, 1],
+  //   [0, 0, 0, 0, 0, 0, 0, 1],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  //   [0, 0, 0, 0, 0, 0, null, null],
+  //   [0, 0, 0, 0, 1, null, null, null],
+  //   [0, 0, 0, 0, 0, 0, null, 1],
+  //   [0, 0, 0, 0, 0, 0, 0, null],
+  //   [0, 0, 0, 0, 0, 0, 0, 0],
+  // ];
 
   currPlayer = 0;
 }
@@ -78,23 +101,34 @@ function placeSeed(y, x) {
     return;
   }
   const [isLegalMove, capturedSeeds] = checkMove(y, x, currPlayer, true);
-
+  console.log(`${isLegalMove}`);
   let endGame = false;
+  let skipCurrPlayer = false;
   if (isLegalMove) {
     console.log(`${currPlayer} places seed at [${y}, ${x}]`);
     board[y][x] = currPlayer;
     flipSeeds(capturedSeeds);
     updateSeedCounterDisplay(countSeeds());
-    endGame = checkEndGame();
-    if (!endGame) {
+    [endGame, skipNextPlayer] = checkEndGame();
+    console.log(`${endGame}, ${skipCurrPlayer}`);
+    if (!endGame && !skipNextPlayer) {
       changePlayer();
+    } else if (!endGame && skipNextPlayer) {
+      // TODO: Code logic to skip curr player
+      let skippedName = undefined;
+      if (currPlayer) {
+        skippedName = p1Name;
+      } else {
+        skippedName = p2Name;
+      }
+      updateMessageDisplay(
+        `${skippedName} is skipped as he does not have any legal move left. `
+      );
+    } else if (endGame) {
+      endGameSequence();
     }
   } else {
     updateMessageDisplay("", isLegalMove);
-  }
-
-  if (endGame) {
-    endGameSequence();
   }
 
   if (currPlayer) {
@@ -251,6 +285,11 @@ function changePlayer() {
 }
 
 function checkEndGame() {
+  /**
+   * @return {Array<boolean>} Array of two booleans specifying if it is end game and if
+   * current player's turn should be skipped
+   * @description Checks for end game of either filled board or no moves left for both players
+   */
   const emptySquares = [];
   let opponent = 1;
   if (currPlayer) {
@@ -264,31 +303,26 @@ function checkEndGame() {
     }
   }
   if (emptySquares.length === 0) {
-    return true;
+    return [true, false];
   }
-  // console.log(emptySquares);
+
   let hasLegalMove = false;
   emptySquares.forEach((coord) => {
-    // console.log(`running checkMove() for`, coord[0], coord[1]);
-    if (checkMove(coord[0], coord[1], currPlayer, false)) {
-      console.log(`found legal move`);
+    if (checkMove(coord[0], coord[1], opponent, false)) {
       hasLegalMove = true;
     }
   });
+  console.log(`hasLegalMove is ${hasLegalMove}`);
   if (hasLegalMove) {
-    return false;
+    return [false, false];
   }
   emptySquares.forEach((coord) => {
-    if (checkMove(coord[0], coord[1], opponent, false)) {
-      console.log(`found legal move`);
+    if (checkMove(coord[0], coord[1], currPlayer, false)) {
       hasLegalMove = true;
     }
   });
   if (hasLegalMove) {
-    return false;
+    return [false, true];
   }
-  return true;
+  return [true, false];
 }
-
-// TODO: Code checkEndGame()
-//   - message="How about clicking on the top left button to start a new game?"

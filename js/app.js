@@ -161,6 +161,8 @@ function endGameSequence() {
   } else {
     message = `The game has ended. <span class="fw-bold text-primary">${p2Name}</span> won!`;
   }
+  message +=
+    '<p> Click on "New Game" on the top left corner to play another game!';
   disableBoardInteraction();
   updateMessageDisplay(message);
 }

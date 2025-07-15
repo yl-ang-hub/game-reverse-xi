@@ -108,9 +108,8 @@ function runGame(y, x) {
 
   console.log(`${currPlayer} places seed at [${y}, ${x}]`);
   placeAndFlipSeeds(y, x, capturedSeeds);
-  updateSeedCounterDisplay(countSeeds());
+  updateSeedCountDisplay(countSeeds());
   const [endGame, skipNextPlayer] = checkEndGame();
-
   if (endGame) {
     endGameSequence();
   } else if (!endGame && !skipNextPlayer) {
@@ -126,7 +125,7 @@ function runGame(y, x) {
     // TODO: Disable toggling on/off of board interaction if the computer logic runs very fast
     disableBoardInteraction();
     console.log(`Computer sequence is running and currPlayer is ${currPlayer}`);
-    setTimeout(runComputer, 1000);
+    setTimeout(runComputer, 500);
   } else {
     enableBoardInteraction();
   }

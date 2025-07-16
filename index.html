@@ -62,45 +62,61 @@
         <div class="row" id="landing-page">
           <form id="new-game-form">
             <p>
-              <b>Your name: </b
-              ><input
-                class="landing-pg-col-2"
-                name="username"
-                type="text"
-                required
-              />
+              <b>Your name: </b>
+              <p>
+                &emsp; &emsp;
+                <input
+                  class="landing-pg-col-2"
+                  name="username"
+                  type="text"
+                  required
+                />
+              </p>
             </p>
             <p>
               <b>Choose your board size: </b>
-              <input
+              <p>
+                &emsp; &emsp;
+                <input
                 type="radio"
                 class="landing-pg-col-2"
                 name="board-size"
                 value="8"
                 checked
-              />
-              8x8
-              <input type="radio" name="board-size" value="10" />
-              10x10
-              <input type="radio" name="board-size" value="12" />
-              12x12
+                />
+                8x8
+                <input type="radio" name="board-size" value="10" />
+                10x10
+                <input type="radio" name="board-size" value="12" />
+                12x12
+              </p>
             </p>
             <p>
               <b>Mode:</b>
-              <input type="radio" name="game-mode" value="Normal" checked />
-              Normal
-              <input type="radio" name="game-mode" value="Crazy" />
-              Crazy
+              <p>
+                &emsp; &emsp;
+                <input type="radio" name="game-mode" value="Normal" checked />
+                Normal
+                <input type="radio" name="game-mode" value="Crazy" />
+                Crazy
+                <small>
+                  (randomly flip a seed from both players after every 5
+                  turns)
+                </small>
+              </p>
             </p>
-            <p>
-              <b>Difficulty Level:</b>
-              <input type="radio" name="difficulty" value="Easy" checked />
-              Easy
-              <input type="radio" name="difficulty" value="Intermediate" />
-              Intermediate
-              <input type="radio" name="difficulty" value="Hard" />
-              Hard
-            </p>
+              <p>
+                <b>Difficulty Level:</b>
+                <p>
+                  &emsp; &emsp;
+                  <input type="radio" name="difficulty" value="Easy" checked />
+                  Easy
+                  <input type="radio" name="difficulty" value="Intermediate" />
+                  Intermediate
+                  <input type="radio" name="difficulty" value="Hard" />
+                  Hard
+                </p>
+              </p>
             <p><input type="submit" value="Start Game" /></p>
           </form>
         </div>

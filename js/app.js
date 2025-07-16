@@ -42,9 +42,9 @@ function init(name, size, mode, difficulty) {
 
   mainInfo.innerText = `${gameMode} Mode (${gameDifficulty})`;
 
-  landingPage.classList.add("d-lg-none");
-  mainInfo.classList.remove("d-lg-none");
-  mainGameWindow.classList.remove("d-lg-none");
+  landingPage.classList.add("d-sm-none");
+  mainInfo.classList.remove("d-sm-none");
+  mainGameWindow.classList.remove("d-sm-none");
 
   setUpBoard(size);
   generateBoardDisplay();
@@ -274,9 +274,9 @@ closeRulesBtn.addEventListener("click", (event) => {
 
 newGameBtn.addEventListener("click", (target) => {
   newGameDialog.close();
-  landingPage.classList.remove("d-lg-none");
-  mainInfo.classList.add("d-lg-none");
-  mainGameWindow.classList.add("d-lg-none");
+  landingPage.classList.remove("d-sm-none");
+  mainInfo.classList.add("d-sm-none");
+  mainGameWindow.classList.add("d-sm-none");
 });
 
 function enableBoardInteraction() {

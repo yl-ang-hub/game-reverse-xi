@@ -62,7 +62,7 @@ dialog {
 }
 
 #close-rules-dialog {
-  align-self: center;
+  margin-left: 30rem;
 }
 
 #white-move-msg,
@@ -96,6 +96,6 @@ dialog {
   background-color: black;
 }
 
-.red-border {
-  border: 5px solid red;
+#close-game-dialog {
+  margin: 0 10px;
 }

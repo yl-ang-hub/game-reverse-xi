@@ -15,9 +15,11 @@ const closeRulesBtn = document.querySelector("#close-rules-dialog");
 const newGameForm = document.getElementById("new-game-form");
 const newGameBtn = document.querySelector("#restart-game");
 
+const introPage = document.querySelector("#intro");
 const landingPage = document.querySelector("#landing-page");
 const mainInfo = document.querySelector("#main-info");
 const mainGameWindow = document.querySelector("#main");
+const startBtn = document.querySelector("#start-btn");
 
 const blackSeedCounter = document.querySelector("#black-seed-counter");
 const whiteSeedCounter = document.querySelector("#white-seed-counter");
@@ -263,20 +265,26 @@ nav.addEventListener("click", (event) => {
   }
 });
 
-closeNewGameDialog.addEventListener("click", (event) => {
+closeNewGameDialog.addEventListener("click", () => {
   newGameDialog.close();
 });
 
-closeRulesBtn.addEventListener("click", (event) => {
+closeRulesBtn.addEventListener("click", () => {
   rulesDialog.close();
   // console.log(closeRulesBtn, rulesDialog);
 });
 
-newGameBtn.addEventListener("click", (target) => {
+newGameBtn.addEventListener("click", () => {
   newGameDialog.close();
   landingPage.classList.remove("d-none");
   mainInfo.classList.add("d-none");
   mainGameWindow.classList.add("d-none");
+});
+
+startBtn.addEventListener("click", (event) => {
+  introPage.classList.add("d-none");
+  landingPage.classList.remove("d-none");
+  event.preventDefault();
 });
 
 function enableBoardInteraction() {

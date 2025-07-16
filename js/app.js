@@ -8,12 +8,14 @@ let p1Name,
 
 /* ------------------------------ Cached Reference Elements ------------------------------ */
 const nav = document.querySelector("#nav");
+const newGameBtn = document.querySelector("#new-game-btn");
+const rulesBtn = document.querySelector("#rules-btn");
 const newGameDialog = document.querySelector("#new-game-dialog");
 const closeNewGameDialog = document.querySelector("#close-game-dialog");
 const rulesDialog = document.querySelector("#rules-dialog");
 const closeRulesBtn = document.querySelector("#close-rules-dialog");
 const newGameForm = document.getElementById("new-game-form");
-const newGameBtn = document.querySelector("#restart-game");
+const restartGameBtn = document.querySelector("#restart-game");
 
 const introPage = document.querySelector("#intro");
 const landingPage = document.querySelector("#landing-page");
@@ -253,16 +255,17 @@ newGameForm.addEventListener("submit", (event) => {
       input.push(field.value);
     }
   }
+  newGameBtn.classList.remove("d-none");
   init(...input);
   event.preventDefault();
 });
 
-nav.addEventListener("click", (event) => {
-  if (event.target.innerText === "New Game") {
-    newGameDialog.showModal();
-  } else if (event.target.innerText === "Rules") {
-    rulesDialog.showModal();
-  }
+newGameBtn.addEventListener("click", (event) => {
+  newGameDialog.showModal();
+});
+
+rulesBtn.addEventListener("click", (event) => {
+  rulesDialog.showModal();
 });
 
 closeNewGameDialog.addEventListener("click", () => {
@@ -271,11 +274,11 @@ closeNewGameDialog.addEventListener("click", () => {
 
 closeRulesBtn.addEventListener("click", () => {
   rulesDialog.close();
-  // console.log(closeRulesBtn, rulesDialog);
 });
 
-newGameBtn.addEventListener("click", () => {
+restartGameBtn.addEventListener("click", () => {
   newGameDialog.close();
+  newGameBtn.classList.add("d-none");
   landingPage.classList.remove("d-none");
   mainInfo.classList.add("d-none");
   mainGameWindow.classList.add("d-none");
@@ -284,6 +287,7 @@ newGameBtn.addEventListener("click", () => {
 startBtn.addEventListener("click", (event) => {
   introPage.classList.add("d-none");
   landingPage.classList.remove("d-none");
+  rulesBtn.classList.remove("d-none");
   event.preventDefault();
 });
 

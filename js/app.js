@@ -33,10 +33,12 @@ const blackPlayerDisplay = document.querySelector("#black-move-msg");
 /* -------------------------------------- Functions -------------------------------------- */
 
 function init(name, size, mode, difficulty) {
+  /**
+   * @description Get the new game settings from user, re-initialised all variables and invoked functions to reset all the displays on screen.
+   */
   p1Name = name;
   gameMode = mode;
   gameDifficulty = difficulty;
-  // TODO: Do something with mode
 
   mainInfo.innerText = `${gameMode} Mode (${gameDifficulty})`;
 
@@ -55,18 +57,18 @@ function init(name, size, mode, difficulty) {
 
 function resetGame() {
   /**
-   * Resets the game and return a new board
-   * @return array representing the board
+   * @description Resets the game, and clear the variables
+   * @return {<Array<Array<number>>>} representing the board
    */
   board = [];
   turnCount = 0;
   disableBoardInteraction();
-  updateMessageDisplay("");
-  updatePlayerDisplay("");
-  updateSeedCountDisplay({ black: 0, white: 0 });
 }
 
 function generateBoardDisplay() {
+  /**
+   * @description Clear and re-generate the board display on screen
+   */
   const oldBoard = document.querySelectorAll("#board-row");
   oldBoard.forEach((row) => row.remove());
 
@@ -86,8 +88,6 @@ function generateBoardDisplay() {
     newSqrNode.setAttribute("x", i);
     newSqrNode.querySelector("#seed").setAttribute("x", i);
     row.appendChild(newSqrNode);
-    // console.log(newSqrNode);
-    // console.log("Row with 8 sqr is generating");
   }
 
   // Create board HTML elements - Duplicate to 8 rows
@@ -102,7 +102,6 @@ function generateBoardDisplay() {
       .forEach((seedNode) => seedNode.setAttribute("y", i));
     game.appendChild(newNode);
   }
-  // console.log(game);
 
   // Update elements with data
   const boardElements = document.querySelectorAll("#board-row");
@@ -111,13 +110,10 @@ function generateBoardDisplay() {
     eachRow.forEach((data, x) => {
       const seedNode = data.querySelector("div");
       if (board[y][x] === null) {
-        // console.log(`${data}: Running null attachment to display`);
         seedNode.setAttribute("class", "row no-seed");
       } else if (board[y][x] === 0) {
-        // console.log(`${data}: Running 0 attachment to display`);
         seedNode.setAttribute("class", "row black-seed");
       } else if (board[y][x] === 1) {
-        // console.log(`${data}: Running 1 attachment to display`);
         seedNode.setAttribute("class", "row white-seed");
       }
     });
@@ -126,7 +122,7 @@ function generateBoardDisplay() {
 
 function updateBoardDisplay(capturedSeeds, player) {
   /**
-   * @description Flip the captured seeds on board display
+   * @description Flip the captured seeds on screen
    */
   const changeToColor = player ? "row white-seed" : "row black-seed";
   const boardSeeds = document.querySelectorAll("#seed");
@@ -142,6 +138,9 @@ function updateBoardDisplay(capturedSeeds, player) {
 }
 
 function highlightRandSquareToFlip(posY, posX) {
+  /**
+   * @description In crazy mode, highlight the squares where the randomly selected seeds will be flipped
+   */
   const boardSqr = document.querySelectorAll("#sqr");
   boardSqr.forEach((sqr) => {
     const y = sqr.getAttribute("y"),
@@ -167,7 +166,6 @@ function updateSeedCountDisplay(seedsCounter) {
 }
 
 function animateSeedCounter() {
-  // TODO: Toggle background between red and grey
   if (currPlayer) {
     whiteSeedCounter.setAttribute("style", "background-color: #7d2b2b");
     blackSeedCounter.setAttribute("style", "background-color: #757575ff");
@@ -183,7 +181,9 @@ function deanimateSeedCounter() {
 }
 
 function updateMessageDisplay(message = "", isLegalMove) {
-  // Message for illegal move
+  /**
+   * @description Update the message display on screen and handle message generation for illegal moves.
+   */
   if (
     isLegalMove === false &&
     (isPrevMoveLegal === "" || isPrevMoveLegal === false)
@@ -193,8 +193,6 @@ function updateMessageDisplay(message = "", isLegalMove) {
     message = "Sorry, your move is illegal. Try again.";
   }
   isPrevMoveLegal = isLegalMove;
-
-  // Update message on screen
   messageBox.innerHTML = message;
 }
 
@@ -214,6 +212,9 @@ function clearPlayerDisplay() {
 }
 
 function endGameSequence() {
+  /**
+   * @description Handles the message display for endgame, invokes function to determine the winner and disable player interaction with the board
+   */
   const seedsCounter = countSeeds();
   let message = "";
   if (seedsCounter["black"] === seedsCounter["white"]) {
@@ -225,11 +226,14 @@ function endGameSequence() {
   }
   message +=
     '<p> Click on "New Game" on the top left corner to play another game!';
-  disableBoardInteraction();
   updateMessageDisplay(message);
+  disableBoardInteraction();
 }
 
 function eventPlaceSeed(event) {
+  /**
+   * @description Callback function to take player's move and invokes function to assess move and run the game
+   */
   const x = parseInt(event.target.getAttribute("x"));
   const y = parseInt(event.target.getAttribute("y"));
   runGame(y, x);
@@ -276,10 +280,16 @@ newGameBtn.addEventListener("click", (target) => {
 });
 
 function enableBoardInteraction() {
+  /**
+   * @description Enables player to place seed on the board
+   */
   game.addEventListener("click", eventPlaceSeed);
 }
 
 function disableBoardInteraction() {
+  /**
+   * Disable player's interaction with board
+   */
   game.removeEventListener("click", eventPlaceSeed);
 }
 

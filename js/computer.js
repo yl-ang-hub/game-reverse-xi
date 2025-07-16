@@ -143,8 +143,7 @@ function compLogicHard(legalMoves) {
 
 function compIsBraining(y, x) {
   /**
-   * Wrapper for recursive function
-   * @return {boolean} Returns true if there are legal move(s) for the player
+   * @description Wrapper for recursive function to get the number of seeds captured.
    * @return {<Array<boolean, Array>>}: Returns true if there are legal move(s) and
    * an Array of the coordinates of seeds that will be captured by the player
    */
@@ -157,7 +156,7 @@ function compIsBraining(y, x) {
 
   function recursiveCompCheckMove(direction, y, x) {
     /**
-     * @description Recursively search for opponent seeds to capture
+     * @description Recursively search for opponent seeds that will be captured
      */
     // console.log(`moveY and moveX is ${moveY} and ${moveX}`);
     console.log(

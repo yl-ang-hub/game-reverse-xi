@@ -8,7 +8,7 @@ let turnCount = 0;
 
 function setUpBoard(size) {
   /**
-   * Initialise a new board and update display.
+   * @description Initialise a new board and update display.
    */
 
   // Assume 0 is black, 1 is white, and null is empty
@@ -42,8 +42,7 @@ function setUpBoard(size) {
   //   [null, null, null, null, null, null, null, null, null, null],
   // ];
 
-  // TODO: Flip this board in multiple directions to test end-game code
-  // Temporary code for debug; no further moves for both sides.
+  // TEST: Test end-game code (no further moves for both sides)
   // board = [
   //   [0, 0, 0, 0, 0, 0, 0, 0],
   //   [0, 0, 0, 0, 0, 0, 0, 0],
@@ -65,7 +64,7 @@ function setUpBoard(size) {
   //   [0, 0, 0, 0, 0, 0, 0, 0],
   // ];
 
-  // TODO: Get a few more board layouts to test end game
+  // TEST: end game
   // board = [
   //   [0, 0, 0, 0, 0, 0, 0, 0],
   //   [0, 0, 0, 0, 0, 0, 0, 0],
@@ -77,7 +76,7 @@ function setUpBoard(size) {
   //   [0, 0, 0, 0, 0, 0, 0, 0],
   // ];
 
-  // Test skip turn if currplayer has no legal move left
+  // TEST: skip turn if currplayer has no legal move left
   // board = [
   //   [0, 0, 0, 0, 0, 0, 0, 1],
   //   [0, 0, 0, 0, 0, 0, 0, 1],
@@ -94,8 +93,7 @@ function setUpBoard(size) {
 
 function runGame(y, x) {
   /**
-   * Invokes functions to check on legality of moves, flip seeds, update display,
-   * change player and check for end game for each of the player's turn.
+   * @description Invokes functions to check on legality of moves, flip seeds, update display, change player, check for end game, and randomly flip seeds (crazy mode only) for each of the player's turn.
    */
   if (board[y][x] !== null) {
     const message = "Please choose an empty square.";
@@ -128,14 +126,12 @@ function runGame(y, x) {
   }
 
   if (currPlayer) {
-    // TODO: Disable toggling on/off of board interaction if the computer logic runs very fast
     disableBoardInteraction();
     setTimeout(runComputer, 500);
   } else {
     enableBoardInteraction();
   }
 
-  console.log(`turncount is ${turnCount}`);
   if (turnCount % 10 === 0 && gameMode === "Crazy") {
     disableBoardInteraction();
     deanimateSeedCounter();
@@ -144,7 +140,6 @@ function runGame(y, x) {
       "Crazy mode: a random seed from both players will be flipped!"
     );
 
-    // TODO: Randomly flip 1 player and 1 opponent seed
     setTimeout(() => {
       const [p1SeedToFlip, p2SeedToFlip] = randomlyFlipSeeds();
       console.log(`p1 seed is ${p1SeedToFlip}`);
@@ -176,7 +171,7 @@ function checkMove(
   getAllCapturedSeeds = false
 ) {
   /**
-   * Wrapper for recursive function
+   * @description Wrapper for recursive function to check if move is legal and get the seeds captured.
    * @return {boolean} Returns true if there are legal move(s) for the player
    * @return {<Array<boolean, Array>>}: Returns true if there are legal move(s) and
    * an Array of the coordinates of seeds that will be captured by the player
@@ -191,8 +186,9 @@ function checkMove(
 
   function recursiveCheckMove(direction, y, x) {
     /**
-     * Updates capturedSeeds
+     * @description Recursively check for legal move and the opponent's seeds that will be captured
      */
+
     // console.log(`moveY and moveX is ${moveY} and ${moveX}`);
     // console.log(
     //   `Running in direction ${direction} at y-x of ${y}-${x} and current player is ${playerForChecking}`
@@ -283,6 +279,9 @@ function checkMove(
 }
 
 function placeAndFlipSeeds(y, x, capturedSeeds) {
+  /**
+   * @description Updates the board of the captured seeds and invokes the function to display on screen
+   */
   board[y][x] = currPlayer;
   for (let [posY, posX] of capturedSeeds) {
     board[posY][posX] = currPlayer;
@@ -292,6 +291,10 @@ function placeAndFlipSeeds(y, x, capturedSeeds) {
 }
 
 function countSeeds() {
+  /**
+   * @description Count the seeds for each player
+   * @return {Array<number>} of seeds for black and white player
+   */
   const seedsCounter = { black: 0, white: 0 };
   for (row of board) {
     for (square of row) {
@@ -306,6 +309,9 @@ function countSeeds() {
 }
 
 function changePlayer() {
+  /**
+   * @description Updates the current player, and invokes the function to display a message and current player on screen
+   */
   currPlayer ? (currPlayer = 0) : (currPlayer = 1);
   if (currPlayer) {
     updateMessageDisplay("Computer is playing.");
@@ -359,6 +365,10 @@ function checkEndGame() {
 }
 
 function randomlyFlipSeeds() {
+  /**
+   * @description Get all seeds on the board for both players and randomly return a selected seed for each player
+   * @return {Array<Array<number>>} Provides an array of coordinates [y, x] of the selected seed for both black and white players
+   */
   const p1Seeds = [],
     p2Seeds = [];
   let p1SeedToFlip = undefined,

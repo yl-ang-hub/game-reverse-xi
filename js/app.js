@@ -45,7 +45,7 @@ function init(name, size, mode, difficulty) {
   mainGameWindow.classList.remove("d-lg-none");
 
   setUpBoard(size);
-  updateBoardDisplay();
+  generateBoardDisplay();
   enableBoardInteraction();
   updatePlayerDisplay();
   updateMessageDisplay("It's your turn!");
@@ -59,13 +59,14 @@ function resetGame() {
    * @return array representing the board
    */
   board = [];
+  turnCount = 0;
   disableBoardInteraction();
   updateMessageDisplay("");
   updatePlayerDisplay("");
   updateSeedCountDisplay({ black: 0, white: 0 });
 }
 
-function updateBoardDisplay() {
+function generateBoardDisplay() {
   const oldBoard = document.querySelectorAll("#board-row");
   oldBoard.forEach((row) => row.remove());
 
@@ -104,7 +105,7 @@ function updateBoardDisplay() {
   // console.log(game);
 
   // Update elements with data
-  boardElements = document.querySelectorAll("#board-row");
+  const boardElements = document.querySelectorAll("#board-row");
   boardElements.forEach((row, y) => {
     let eachRow = row.querySelectorAll("#sqr");
     eachRow.forEach((data, x) => {
@@ -123,6 +124,43 @@ function updateBoardDisplay() {
   });
 }
 
+function updateBoardDisplay(capturedSeeds, player) {
+  /**
+   * @description Flip the captured seeds on board display
+   */
+  const changeToColor = player ? "row white-seed" : "row black-seed";
+  const boardSeeds = document.querySelectorAll("#seed");
+  capturedSeeds.forEach(([seedY, seedX]) => {
+    boardSeeds.forEach((seed) => {
+      const y = seed.getAttribute("y"),
+        x = seed.getAttribute("x");
+      if (y == seedY && x == seedX) {
+        seed.setAttribute("class", changeToColor);
+      }
+    });
+  });
+}
+
+function highlightRandSquareToFlip(posY, posX) {
+  const boardSqr = document.querySelectorAll("#sqr");
+  boardSqr.forEach((sqr) => {
+    const y = sqr.getAttribute("y"),
+      x = sqr.getAttribute("x");
+    if (y == posY && x == posX) {
+      // sqr.classList.remove("border");
+      sqr.classList.remove("border-dark");
+      sqr.classList.add("border-danger");
+      sqr.classList.add("border-2");
+      setTimeout(() => {
+        // sqr.classList.add("border");
+        sqr.classList.add("border-dark");
+        sqr.classList.remove("border-danger");
+        sqr.classList.remove("border-2");
+      }, 3000);
+    }
+  });
+}
+
 function updateSeedCountDisplay(seedsCounter) {
   blackSeedCount.innerText = seedsCounter["black"];
   whiteSeedCount.innerText = seedsCounter["white"];
@@ -137,6 +175,11 @@ function animateSeedCounter() {
     blackSeedCounter.setAttribute("style", "background-color: #7d2b2b");
     whiteSeedCounter.setAttribute("style", "background-color: #757575ff");
   }
+}
+
+function deanimateSeedCounter() {
+  blackSeedCounter.setAttribute("style", "background-color: #757575ff");
+  whiteSeedCounter.setAttribute("style", "background-color: #757575ff");
 }
 
 function updateMessageDisplay(message = "", isLegalMove) {
@@ -163,6 +206,11 @@ function updatePlayerDisplay() {
     whitePlayerDisplay.innerText = "";
     blackPlayerDisplay.innerText = `${p1Name}'s turn!`;
   }
+}
+
+function clearPlayerDisplay() {
+  blackPlayerDisplay.innerText = "";
+  whitePlayerDisplay.innerText = "";
 }
 
 function endGameSequence() {

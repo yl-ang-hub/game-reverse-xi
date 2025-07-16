@@ -1,5 +1,7 @@
 /* -------------------------------------- Constants -------------------------------------- */
 /* -------------------------------------- Variables -------------------------------------- */
+let turnCount = 0;
+
 /* ------------------------------ Cached Reference Elements ------------------------------ */
 /* -------------------------------------- Functions -------------------------------------- */
 /* ----------------------------------- Event Listeners ----------------------------------- */
@@ -106,12 +108,15 @@ function runGame(y, x) {
     return;
   }
 
-  console.log(`${currPlayer} places seed at [${y}, ${x}]`);
+  // console.log(`${currPlayer} places seed at [${y}, ${x}]`);
   placeAndFlipSeeds(y, x, capturedSeeds);
   updateSeedCountDisplay(countSeeds());
+  turnCount++;
+
   const [endGame, skipNextPlayer] = checkEndGame();
   if (endGame) {
     endGameSequence();
+    return;
   } else if (!endGame && !skipNextPlayer) {
     changePlayer();
     animateSeedCounter();
@@ -125,10 +130,42 @@ function runGame(y, x) {
   if (currPlayer) {
     // TODO: Disable toggling on/off of board interaction if the computer logic runs very fast
     disableBoardInteraction();
-    console.log(`Computer sequence is running and currPlayer is ${currPlayer}`);
     setTimeout(runComputer, 500);
   } else {
     enableBoardInteraction();
+  }
+
+  console.log(`turncount is ${turnCount}`);
+  if (turnCount % 10 === 0 && gameMode === "Crazy") {
+    disableBoardInteraction();
+    deanimateSeedCounter();
+    clearPlayerDisplay();
+    updateMessageDisplay(
+      "Crazy mode: a random seed from both players will be flipped!"
+    );
+
+    // TODO: Randomly flip 1 player and 1 opponent seed
+    setTimeout(() => {
+      const [p1SeedToFlip, p2SeedToFlip] = randomlyFlipSeeds();
+      console.log(`p1 seed is ${p1SeedToFlip}`);
+      if (p1SeedToFlip !== undefined) {
+        board[p1SeedToFlip[0]][p1SeedToFlip[1]] = 1;
+        highlightRandSquareToFlip(p1SeedToFlip[0], p1SeedToFlip[1]);
+        setTimeout(() => updateBoardDisplay([p1SeedToFlip], 1), 3000);
+      }
+      console.log(`p2 seed is ${p2SeedToFlip}`);
+      if (p2SeedToFlip !== undefined) {
+        board[p2SeedToFlip[0]][p2SeedToFlip[1]] = 0;
+        highlightRandSquareToFlip(p2SeedToFlip[0], p2SeedToFlip[1]);
+        setTimeout(() => updateBoardDisplay([p2SeedToFlip], 0), 3000);
+      }
+      setTimeout(() => {
+        updateMessageDisplay("");
+        enableBoardInteraction();
+        animateSeedCounter();
+        updatePlayerDisplay();
+      }, 3500);
+    }, 2000);
   }
 }
 
@@ -250,7 +287,8 @@ function placeAndFlipSeeds(y, x, capturedSeeds) {
   for (let [posY, posX] of capturedSeeds) {
     board[posY][posX] = currPlayer;
   }
-  updateBoardDisplay();
+  capturedSeeds.unshift([y, x]);
+  updateBoardDisplay(capturedSeeds, currPlayer);
 }
 
 function countSeeds() {
@@ -305,7 +343,7 @@ function checkEndGame() {
       hasLegalMove = true;
     }
   });
-  console.log(`hasLegalMove is ${hasLegalMove}`);
+  // console.log(`hasLegalMove is ${hasLegalMove}`);
   if (hasLegalMove) {
     return [false, false];
   }
@@ -318,4 +356,50 @@ function checkEndGame() {
     return [false, true];
   }
   return [true, false];
+}
+
+function randomlyFlipSeeds() {
+  const p1Seeds = [],
+    p2Seeds = [];
+  let p1SeedToFlip = undefined,
+    p2SeedToFlip = undefined;
+  for (const [y, row] of board.entries()) {
+    for (const [x, square] of row.entries()) {
+      if (square === 0) {
+        p1Seeds.push([parseInt(y), parseInt(x)]);
+      } else if (square === 1) {
+        p2Seeds.push([parseInt(y), parseInt(x)]);
+      }
+    }
+  }
+  console.log(`p1SeedsFound is ${p1Seeds}`);
+  console.log(`p2SeedsFound is ${p2Seeds}`);
+  if (p1Seeds.length > 4) {
+    const randSeedInd = Math.ceil(Math.random() * (p1Seeds.length - 1));
+    p1SeedToFlip = p1Seeds[randSeedInd];
+    console.log(
+      `randSeed for p1 is ${randSeedInd} and seed selected is ${p1Seeds[randSeedInd]}`
+    );
+  }
+  if (p2Seeds.length > 4) {
+    const randSeedInd = Math.ceil(Math.random() * (p2Seeds.length - 1));
+    p2SeedToFlip = p2Seeds[randSeedInd];
+    console.log(
+      `randSeed for p2 is ${randSeedInd} and seed selected is ${p2Seeds[randSeedInd]}`
+    );
+  }
+  if (p1Seeds.length <= 4 && p2Seeds.length <= 4) {
+    updateMessageDisplay(
+      "Crazy mode: As both players have less than 5 seeds each, no seeds will be flipped"
+    );
+  } else if (p1Seeds.length <= 4) {
+    updateMessageDisplay(
+      `Crazy mode: a random seed from both players will be flipped!\nAs ${p1Name} has less than 5 seeds, none of ${p1Name}'s seeds will be flipped`
+    );
+  } else if (p2Seeds.length <= 4) {
+    updateMessageDisplay(
+      `Crazy mode: a random seed from both players will be flipped!\nAs ${p2Name} has less than 5 seeds, none of ${p2Name}'s seeds will be flipped`
+    );
+  }
+  return [p1SeedToFlip, p2SeedToFlip];
 }

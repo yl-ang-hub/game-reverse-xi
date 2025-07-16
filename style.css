@@ -1,7 +1,3 @@
-.root {
-  --boardBgColor: #2d6946;
-}
-
 body {
   background-image: url("./assets/bg.jpg");
   font-family: "Kalam", cursive;
@@ -98,4 +94,8 @@ dialog {
 }
 #black-seed-display {
   background-color: black;
+}
+
+.red-border {
+  border: 5px solid red;
 }

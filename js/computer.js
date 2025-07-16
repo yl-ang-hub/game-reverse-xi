@@ -7,7 +7,7 @@ function runComputer() {
    * @description Invokes functions for computer to make a move and place seed on the board
    */
   let [y, x] = getCalculatedMove();
-  console.log(`Computer decided on a calculated move: ${y}, ${x}`);
+  // console.log(`Computer decided on a calculated move: ${y}, ${x}`);
   runGame(y, x);
 }
 
@@ -30,8 +30,6 @@ function getCalculatedMove() {
     return compLogicIntermediate(legalMoves);
   } else if (gameDifficulty === "Hard") {
     return compLogicHard(legalMoves);
-  } else {
-    console.log(`Error: difficulty level not yet coded`);
   }
 }
 
@@ -54,8 +52,8 @@ function compLogicIntermediate(legalMoves) {
     const totalSeedsCaptured = compIsBraining(move[0], move[1]);
     valueOfMoves.push(totalSeedsCaptured);
   }
-  console.log(`List of legal moves: ${legalMoves}`);
-  console.log(`Value of moves: ${valueOfMoves}`);
+  // console.log(`List of legal moves: ${legalMoves}`);
+  // console.log(`Value of moves: ${valueOfMoves}`);
   let indexOfMaxSeeds = 0;
   for (let i = 1; i < valueOfMoves.length; i++) {
     if (valueOfMoves[i] > valueOfMoves[indexOfMaxSeeds]) {
@@ -192,11 +190,11 @@ function compIsBraining(y, x) {
         break;
     }
     if (direction === 9) {
-      console.log("breaking as direction >= 9");
+      // console.log("breaking as direction >= 9");
       return;
     }
     if (y === -1 || x === -1 || y === boardLength || x === boardLength) {
-      console.log("breaking as y or x >= boardlength");
+      // console.log("breaking as y or x >= boardlength");
       capturedSeedsInOneDirection = 0;
       direction++;
       recursiveCompCheckMove(direction, moveY, moveX);

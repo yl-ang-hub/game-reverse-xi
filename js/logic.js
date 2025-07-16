@@ -114,6 +114,7 @@ function runGame(y, x) {
     endGameSequence();
   } else if (!endGame && !skipNextPlayer) {
     changePlayer();
+    animateSeedCounter();
   } else if (!endGame && skipNextPlayer) {
     let skippedName = currPlayer ? p1Name : p2Name;
     updateMessageDisplay(

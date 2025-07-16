@@ -50,6 +50,7 @@ function init(name, size, mode, difficulty) {
   updatePlayerDisplay();
   updateMessageDisplay("It's your turn!");
   updateSeedCountDisplay(countSeeds());
+  animateSeedCounter();
 }
 
 function resetGame() {
@@ -129,9 +130,13 @@ function updateSeedCountDisplay(seedsCounter) {
 
 function animateSeedCounter() {
   // TODO: Toggle background between red and grey
-  currPlayer
-    ? whiteSeedCounter.getAttribute("style", "background-color: #7d2b2b")
-    : blackSeedCounter.getAttribute("style", "background-color: lightgrey");
+  if (currPlayer) {
+    whiteSeedCounter.setAttribute("style", "background-color: #7d2b2b");
+    blackSeedCounter.setAttribute("style", "background-color: #757575ff");
+  } else {
+    blackSeedCounter.setAttribute("style", "background-color: #7d2b2b");
+    whiteSeedCounter.setAttribute("style", "background-color: #757575ff");
+  }
 }
 
 function updateMessageDisplay(message = "", isLegalMove) {

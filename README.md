@@ -42,6 +42,7 @@ Play the game at https://yl-ang-hub.github.io/game-reverse-xi/
 ### Attributions
 
 - Background image: [Designed by Freepik](https://www.freepik.com/free-photo/wooden-textures-background_4011405.htm#fromView=search&page=1&position=48&uuid=fecd2c87-252c-4b5c-8c0f-172a77adde29&query=wood+background+)
+- Reversi Image: [Ryutaro Tsukata from Pexels](https://www.pexels.com/photo/crop-unrecognizable-women-playing-reversi-game-on-bed-5472267/)
 
 ## Design
 

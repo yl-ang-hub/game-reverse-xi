@@ -56,9 +56,9 @@ Play the game at https://yl-ang-hub.github.io/game-reverse-xi/
 
 - With the gameplay, rules, user stories and game requirements in mind, I tried to plan out the overall look and feel of the game before starting to structure and code the HTML for the page.
 - Board view
-  ![view of the board during gameplay](./game.png)
+  ![view of the board during gameplay](./readme/game.png)
 - Game Options
-  ![options for player to select for a new game](./settings.png)
+  ![options for player to select for a new game](./readme/settings.png)
 
 ## Implementation
 

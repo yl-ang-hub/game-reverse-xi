@@ -234,6 +234,7 @@ function endGameSequence() {
   message +=
     '<p> Click on "New Game" on the top left corner to play another game!';
   updateMessageDisplay(message);
+  animateSeedCounter(false);
   disableBoardInteraction();
 }
 

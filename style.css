@@ -101,3 +101,7 @@ dialog {
   display: block;
   margin: auto;
 }
+
+#messagebox-container {
+  height: 100px;
+}

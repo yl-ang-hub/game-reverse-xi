@@ -1,7 +1,5 @@
 /* -------------------------------------- Constants -------------------------------------- */
 /* -------------------------------------- Variables -------------------------------------- */
-let turnCount = 0;
-
 /* ------------------------------ Cached Reference Elements ------------------------------ */
 /* -------------------------------------- Functions -------------------------------------- */
 /* ----------------------------------- Event Listeners ----------------------------------- */
@@ -14,7 +12,6 @@ function setUpBoard(size) {
   // Assume 0 is black, 1 is white, and null is empty
   // Coordinates for board is board[posY][posX]
 
-  // console.log(`setUpBoard is running`);
   boardLength = parseInt(size);
   board = [];
   mid1 = boardLength / 2 - 1;
@@ -30,64 +27,6 @@ function setUpBoard(size) {
       }
     }
   }
-  // Temporary code for debug; note [posY][posX]
-  // board = [
-  //   [null, null, null, null, null, null, null, null, null, null],
-  //   [null, null, null, null, null, null, null, null, null, null],
-  //   [null, null, 1, null, null, null, null, null, null, null],
-  //   [null, null, 0, null, null, null, null, null, null, null],
-  //   [1, 0, null, 0, 0, 1, null, null, null, null],
-  //   [null, null, 0, null, 1, 0, 0, null, null, null],
-  //   [null, null, 1, null, null, null, null, null, null, null],
-  //   [null, null, null, null, null, null, null, null, null, null],
-  // ];
-
-  // TEST: Test end-game code (no further moves for both sides)
-  // board = [
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  //   [0, 0, 0, 0, 0, 0, 1, 0],
-  //   [0, 0, 0, 0, 0, 1, null, null],
-  //   [0, 0, 0, 0, 0, 0, null, null],
-  //   [0, 0, 0, 0, 0, 0, null, 1],
-  //   [0, 0, 0, 0, 0, 0, 0, null],
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  // ];
-  // board = [
-  //   [0, 0, 0, null, null, 1, null, 0],
-  //   [0, 0, 1, 1, null, null, 0, 0],
-  //   [0, 0, 0, 1, 0, 0, 0, 0],
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  // ];
-
-  // TEST: end game
-  // board = [
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  //   [0, 0, 0, 0, 0, 0, 1, 0],
-  //   [0, 0, 0, 0, 0, 1, 1, null],
-  //   [0, 0, 0, 0, 0, 0, 1, 0],
-  //   [0, 0, 0, 0, 0, 0, 1, 1],
-  //   [0, 0, 0, 0, 0, 0, 0, 1],
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  // ];
-
-  // TEST: skip turn if currplayer has no legal move left
-  // board = [
-  //   [0, 0, 0, 0, 0, 0, 0, 1],
-  //   [0, 0, 0, 0, 0, 0, 0, 1],
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  //   [0, 0, 0, 0, 0, 0, null, null],
-  //   [0, 0, 0, 0, 1, null, null, null],
-  //   [0, 0, 0, 0, 0, 0, null, 1],
-  //   [0, 0, 0, 0, 0, 0, 0, null],
-  //   [0, 0, 0, 0, 0, 0, 0, 0],
-  // ];
-
   currPlayer = 0;
 }
 
@@ -106,7 +45,6 @@ function runGame(y, x) {
     return;
   }
 
-  // console.log(`${currPlayer} places seed at [${y}, ${x}]`);
   placeAndFlipSeeds(y, x, capturedSeeds);
   updateSeedCountDisplay(countSeeds());
   turnCount++;
@@ -134,7 +72,7 @@ function runGame(y, x) {
 
   if (turnCount % 10 === 0 && gameMode === "Crazy") {
     disableBoardInteraction();
-    deanimateSeedCounter();
+    animateSeedCounter(false);
     clearPlayerDisplay();
     updateMessageDisplay(
       "Crazy mode: a random seed from both players will be flipped!"
@@ -142,13 +80,11 @@ function runGame(y, x) {
 
     setTimeout(() => {
       const [p1SeedToFlip, p2SeedToFlip] = randomlyFlipSeeds();
-      console.log(`p1 seed is ${p1SeedToFlip}`);
       if (p1SeedToFlip !== undefined) {
         board[p1SeedToFlip[0]][p1SeedToFlip[1]] = 1;
         highlightRandSquareToFlip(p1SeedToFlip[0], p1SeedToFlip[1]);
         setTimeout(() => updateBoardDisplay([p1SeedToFlip], 1), 3000);
       }
-      console.log(`p2 seed is ${p2SeedToFlip}`);
       if (p2SeedToFlip !== undefined) {
         board[p2SeedToFlip[0]][p2SeedToFlip[1]] = 0;
         highlightRandSquareToFlip(p2SeedToFlip[0], p2SeedToFlip[1]);
@@ -189,10 +125,6 @@ function checkMove(
      * @description Recursively check for legal move and the opponent's seeds that will be captured
      */
 
-    // console.log(`moveY and moveX is ${moveY} and ${moveX}`);
-    // console.log(
-    //   `Running in direction ${direction} at y-x of ${y}-${x} and current player is ${playerForChecking}`
-    // );
     if (!getAllCapturedSeeds && isLegalMove) {
       return;
     }
@@ -224,37 +156,27 @@ function checkMove(
       // check if x or y hits 7
     }
     if (direction === 9) {
-      // console.log("breaking as direction >= 9");
       return;
     }
     if (y === -1 || x === -1 || y === boardLength || x === boardLength) {
-      // console.log("breaking as y or x >= boardlength");
       capturedSeedsInOneDirection = [];
       direction++;
       recursiveCheckMove(direction, moveY, moveX);
       return;
     }
-    // console.log(`Updated y and x is ${y}, ${x}`);
-    // console.log(`boardlength is ${boardLength}`);
-    // console.log(`running recursion for board at ${y}-${x}`);
-    // console.log(board[y][x]);
     if (board[y][x] === null) {
       capturedSeedsInOneDirection = [];
       direction++;
       recursiveCheckMove(direction, moveY, moveX);
     } else if (board[y][x] === opponentToCheck) {
-      // console.log(`opponentToCheck logic running`);
       capturedSeedsInOneDirection.push([y, x]);
-      // console.log(`capturedSeedInOneDirection: ${capturedSeedsInOneDirection}`);
       recursiveCheckMove(direction, y, x);
     } else if (
       board[y][x] === playerForChecking &&
       capturedSeedsInOneDirection.length !== 0
     ) {
-      // console.log(`Found self logic running`);
       for (coord of capturedSeedsInOneDirection) {
         capturedSeeds.push(coord);
-        // console.log(`capturedSeeds is ${capturedSeeds}`);
       }
       capturedSeedsInOneDirection = [];
       direction++;
@@ -349,7 +271,6 @@ function checkEndGame() {
       hasLegalMove = true;
     }
   });
-  // console.log(`hasLegalMove is ${hasLegalMove}`);
   if (hasLegalMove) {
     return [false, false];
   }
@@ -382,21 +303,13 @@ function randomlyFlipSeeds() {
       }
     }
   }
-  console.log(`p1SeedsFound is ${p1Seeds}`);
-  console.log(`p2SeedsFound is ${p2Seeds}`);
   if (p1Seeds.length > 4) {
     const randSeedInd = Math.ceil(Math.random() * (p1Seeds.length - 1));
     p1SeedToFlip = p1Seeds[randSeedInd];
-    console.log(
-      `randSeed for p1 is ${randSeedInd} and seed selected is ${p1Seeds[randSeedInd]}`
-    );
   }
   if (p2Seeds.length > 4) {
     const randSeedInd = Math.ceil(Math.random() * (p2Seeds.length - 1));
     p2SeedToFlip = p2Seeds[randSeedInd];
-    console.log(
-      `randSeed for p2 is ${randSeedInd} and seed selected is ${p2Seeds[randSeedInd]}`
-    );
   }
   if (p1Seeds.length <= 4 && p2Seeds.length <= 4) {
     updateMessageDisplay(

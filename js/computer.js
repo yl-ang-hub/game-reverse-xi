@@ -7,7 +7,6 @@ function runComputer() {
    * @description Invokes functions for computer to make a move and place seed on the board
    */
   let [y, x] = getCalculatedMove();
-  // console.log(`Computer decided on a calculated move: ${y}, ${x}`);
   runGame(y, x);
 }
 
@@ -52,8 +51,6 @@ function compLogicIntermediate(legalMoves) {
     const totalSeedsCaptured = compIsBraining(move[0], move[1]);
     valueOfMoves.push(totalSeedsCaptured);
   }
-  // console.log(`List of legal moves: ${legalMoves}`);
-  // console.log(`Value of moves: ${valueOfMoves}`);
   let indexOfMaxSeeds = 0;
   for (let i = 1; i < valueOfMoves.length; i++) {
     if (valueOfMoves[i] > valueOfMoves[indexOfMaxSeeds]) {
@@ -73,15 +70,10 @@ function compLogicHard(legalMoves) {
     const totalSeedsCaptured = compIsBraining(move[0], move[1]);
     valueOfMoves.push(totalSeedsCaptured);
   }
-  console.log(`List of legal moves: ${legalMoves}`);
-  console.log(`Value of moves: ${valueOfMoves}`);
   for (let i = 0; i < legalMoves.length; i++) {
     // 10x multiplier for corners
     // 0.1x multiplier for squares surrounding corners
     // 3x multipler for borders
-    console.log(
-      `Running multiplier func on ${legalMoves[i][0]}, ${legalMoves[i][1]}`
-    );
     if (
       (legalMoves[i][0] === 0 && legalMoves[i][1] === 0) ||
       (legalMoves[i][0] === 0 && legalMoves[i][1] === boardLength - 1) ||
@@ -89,11 +81,7 @@ function compLogicHard(legalMoves) {
       (legalMoves[i][0] === boardLength - 1 &&
         legalMoves[i][1] === boardLength - 1)
     ) {
-      console.log(
-        `detected a corner, original val of move is ${valueOfMoves[i]}`
-      );
       valueOfMoves[i] *= 10;
-      console.log(`corner: multiplied val of move is ${valueOfMoves[i]}`);
     } else if (
       (legalMoves[i][0] === 0 &&
         (legalMoves[i][1] === 1 || legalMoves[i][1] === boardLength - 2)) ||
@@ -110,28 +98,16 @@ function compLogicHard(legalMoves) {
       (legalMoves[i][0] === boardLength - 1 &&
         (legalMoves[i][1] === 1 || legalMoves[i][1] === boardLength - 2))
     ) {
-      console.log(
-        `detected a square surrounding a corner, original val of move is ${valueOfMoves[i]}`
-      );
       valueOfMoves[i] = Math.floor(valueOfMoves[i] * 0.1);
-      console.log(
-        `square of corner: multiplied val of move is ${valueOfMoves[i]}`
-      );
     } else if (
       legalMoves[i][0] === 0 ||
       legalMoves[i][0] === boardLength - 1 ||
       legalMoves[i][1] === 0 ||
       legalMoves[i][1] === boardLength - 1
     ) {
-      console.log(
-        `detected a border, original val of move is ${valueOfMoves[i]}`
-      );
       valueOfMoves[i] *= 3;
-      console.log(`border: multiplied val of move is ${valueOfMoves[i]}`);
     }
   }
-  console.log(`List of legal moves: ${legalMoves}`);
-  console.log(`Value of moves after multiplier effect: ${valueOfMoves}`);
   let indexOfMaxSeeds = 0;
   for (let i = 1; i < valueOfMoves.length; i++) {
     if (valueOfMoves[i] > valueOfMoves[indexOfMaxSeeds]) {
@@ -158,10 +134,6 @@ function compIsBraining(y, x) {
     /**
      * @description Recursively search for opponent seeds that will be captured
      */
-    // console.log(`moveY and moveX is ${moveY} and ${moveX}`);
-    console.log(
-      `Running in direction ${direction} at y-x of ${y}-${x} and current player is ${currPlayer}`
-    );
     switch (direction) {
       case 1: // Up
         y--;
@@ -189,31 +161,22 @@ function compIsBraining(y, x) {
         break;
     }
     if (direction === 9) {
-      // console.log("breaking as direction >= 9");
       return;
     }
     if (y === -1 || x === -1 || y === boardLength || x === boardLength) {
-      // console.log("breaking as y or x >= boardlength");
       capturedSeedsInOneDirection = 0;
       direction++;
       recursiveCompCheckMove(direction, moveY, moveX);
       return;
     }
-    // console.log(`Updated y and x is ${y}, ${x}`);
-    // console.log(`boardlength is ${boardLength}`);
-    // console.log(`running recursion for board at ${y}-${x}`);
-    // console.log(board[y][x]);
     if (board[y][x] === null) {
       capturedSeedsInOneDirection = 0;
       direction++;
       recursiveCompCheckMove(direction, moveY, moveX);
     } else if (board[y][x] === opponent) {
-      // console.log(`opponentToCheck logic running`);
       capturedSeedsInOneDirection++;
-      // console.log(`capturedSeedInOneDirection: ${capturedSeedsInOneDirection}`);
       recursiveCompCheckMove(direction, y, x);
     } else if (board[y][x] === currPlayer && capturedSeedsInOneDirection > 0) {
-      // console.log(`Found self logic running`);
       capturedSeeds += capturedSeedsInOneDirection;
       capturedSeedsInOneDirection = 0;
       direction++;

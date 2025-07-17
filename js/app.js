@@ -40,6 +40,7 @@ function init(name, size, mode, difficulty) {
   /**
    * @description Get the new game settings from user, re-initialised all variables and invoked functions to reset all the displays on screen.
    */
+  resetGame();
   p1Name = name;
   gameMode = mode;
   gameDifficulty = difficulty;
@@ -150,12 +151,10 @@ function highlightRandSquareToFlip(posY, posX) {
     const y = sqr.getAttribute("y"),
       x = sqr.getAttribute("x");
     if (y == posY && x == posX) {
-      // sqr.classList.remove("border");
       sqr.classList.remove("border-dark");
       sqr.classList.add("border-danger");
       sqr.classList.add("border-2");
       setTimeout(() => {
-        // sqr.classList.add("border");
         sqr.classList.add("border-dark");
         sqr.classList.remove("border-danger");
         sqr.classList.remove("border-2");
@@ -169,7 +168,16 @@ function updateSeedCountDisplay(seedsCounter) {
   whiteSeedCount.innerText = seedsCounter["white"];
 }
 
-function animateSeedCounter() {
+function animateSeedCounter(animate = true) {
+  /**
+   * @description Animate seed counter to show who is current player
+   * @param {boolean} animate - Set to false if both players are not playing (for crazy mode)
+   */
+  if (!animate) {
+    blackSeedCounter.setAttribute("style", "background-color: #757575ff");
+    whiteSeedCounter.setAttribute("style", "background-color: #757575ff");
+    return;
+  }
   if (currPlayer) {
     whiteSeedCounter.setAttribute("style", "background-color: #7d2b2b");
     blackSeedCounter.setAttribute("style", "background-color: #757575ff");
@@ -177,11 +185,6 @@ function animateSeedCounter() {
     blackSeedCounter.setAttribute("style", "background-color: #7d2b2b");
     whiteSeedCounter.setAttribute("style", "background-color: #757575ff");
   }
-}
-
-function deanimateSeedCounter() {
-  blackSeedCounter.setAttribute("style", "background-color: #757575ff");
-  whiteSeedCounter.setAttribute("style", "background-color: #757575ff");
 }
 
 function updateMessageDisplay(message = "", isLegalMove) {
@@ -248,7 +251,6 @@ newGameForm.addEventListener("submit", (event) => {
   const input = [];
   fields = newGameForm.elements;
   for (field of fields) {
-    console.log(field.checked);
     if (field.name && field.type !== "submit" && field.type !== "radio") {
       input.push(field.value);
     } else if (field.name && field.type === "radio" && field.checked) {
@@ -278,8 +280,8 @@ closeRulesBtn.addEventListener("click", () => {
 
 restartGameBtn.addEventListener("click", () => {
   newGameDialog.close();
-  newGameBtn.classList.add("d-none");
   landingPage.classList.remove("d-none");
+  newGameBtn.classList.add("d-none");
   mainInfo.classList.add("d-none");
   mainGameWindow.classList.add("d-none");
 });

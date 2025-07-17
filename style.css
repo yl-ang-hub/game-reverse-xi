@@ -43,6 +43,10 @@ h1 {
   background-color: white;
 }
 
+#reversi-img {
+  width: 800px;
+}
+
 /* Dialogs */
 dialog {
   max-width: 80vw;

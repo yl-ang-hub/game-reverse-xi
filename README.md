@@ -60,7 +60,7 @@ Play the game at https://yl-ang-hub.github.io/game-reverse-xi/
 - Game Options
   ![options for player to select for a new game](./readme/settings.png)
 
-## Implementation
+## Implementation & Testing
 
 ### Setting Up the Gameplay
 
@@ -80,7 +80,7 @@ Play the game at https://yl-ang-hub.github.io/game-reverse-xi/
   - Any side without legal move left will be skipped for that turn. If both sides have no legal move left, then the game will end.
   - First, the game will identify all the empty squares. Then the same recursive function (`checkMove()`) is utilised to check if any of the empty squares constitute a legal move.
   2. the board still have empty squares for the game to continue
-- Once both conditions cannot be met, then it means that the game has ended. The game will trigger an end game sequence to calculate the winner and display on the screen.
+- If both conditions cannot be met, the game will end. The game will trigger an end game sequence to calculate the winner, display on the screen and disable player's interaction with the board.
 
 ### Designing for a Computer Opponent
 

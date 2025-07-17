@@ -161,16 +161,15 @@ function checkMove(
     if (y === -1 || x === -1 || y === boardLength || x === boardLength) {
       capturedSeedsInOneDirection = [];
       direction++;
-      recursiveCheckMove(direction, moveY, moveX);
-      return;
+      return recursiveCheckMove(direction, moveY, moveX);
     }
     if (board[y][x] === null) {
       capturedSeedsInOneDirection = [];
       direction++;
-      recursiveCheckMove(direction, moveY, moveX);
+      return recursiveCheckMove(direction, moveY, moveX);
     } else if (board[y][x] === opponentToCheck) {
       capturedSeedsInOneDirection.push([y, x]);
-      recursiveCheckMove(direction, y, x);
+      return recursiveCheckMove(direction, y, x);
     } else if (
       board[y][x] === playerForChecking &&
       capturedSeedsInOneDirection.length !== 0
@@ -180,13 +179,13 @@ function checkMove(
       }
       capturedSeedsInOneDirection = [];
       direction++;
-      recursiveCheckMove(direction, moveY, moveX);
+      return recursiveCheckMove(direction, moveY, moveX);
     } else if (
       board[y][x] === playerForChecking &&
       capturedSeedsInOneDirection.length === 0
     ) {
       direction++;
-      recursiveCheckMove(direction, moveY, moveX);
+      return recursiveCheckMove(direction, moveY, moveX);
     }
   }
   recursiveCheckMove(direction, y, x);

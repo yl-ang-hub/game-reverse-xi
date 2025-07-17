@@ -166,27 +166,26 @@ function compIsBraining(y, x) {
     if (y === -1 || x === -1 || y === boardLength || x === boardLength) {
       capturedSeedsInOneDirection = 0;
       direction++;
-      recursiveCompCheckMove(direction, moveY, moveX);
-      return;
+      return recursiveCompCheckMove(direction, moveY, moveX);
     }
     if (board[y][x] === null) {
       capturedSeedsInOneDirection = 0;
       direction++;
-      recursiveCompCheckMove(direction, moveY, moveX);
+      return recursiveCompCheckMove(direction, moveY, moveX);
     } else if (board[y][x] === opponent) {
       capturedSeedsInOneDirection++;
-      recursiveCompCheckMove(direction, y, x);
+      return recursiveCompCheckMove(direction, y, x);
     } else if (board[y][x] === currPlayer && capturedSeedsInOneDirection > 0) {
       capturedSeeds += capturedSeedsInOneDirection;
       capturedSeedsInOneDirection = 0;
       direction++;
-      recursiveCompCheckMove(direction, moveY, moveX);
+      return recursiveCompCheckMove(direction, moveY, moveX);
     } else if (
       board[y][x] === currPlayer &&
       capturedSeedsInOneDirection === 0
     ) {
       direction++;
-      recursiveCompCheckMove(direction, moveY, moveX);
+      return recursiveCompCheckMove(direction, moveY, moveX);
     }
   }
   recursiveCompCheckMove(direction, y, x);

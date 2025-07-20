@@ -51,6 +51,9 @@ function init(name, size, mode, difficulty) {
   mainInfo.classList.remove("d-none");
   mainGameWindow.classList.remove("d-none");
 
+  if (parseInt(size) === 10) game.setAttribute("style", "width:570px");
+  if (parseInt(size) === 12) game.setAttribute("style", "width:670px");
+
   setUpBoard(size);
   generateBoardDisplay();
   enableBoardInteraction();

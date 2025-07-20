@@ -14,18 +14,23 @@ h1 {
   background-color: #2d6946;
 }
 
+#nav {
+  margin: auto;
+}
+
 .solid-black-2 {
   border: 2px solid black;
 }
 
 #landing-page {
-  margin: 0 0 0 18vw;
+  margin: 0 0 0 12vw;
 }
 
 #game {
   background-color: black;
   border: 20px solid black;
-  width: 470px;
+  width: 450px;
+  margin: auto;
 }
 
 #seed {
@@ -80,6 +85,7 @@ dialog {
   border-radius: 10px;
   font-size: 32px;
   color: rgb(209, 239, 209);
+  width: 180px;
 }
 
 #white-seed-display,
